@@ -9,7 +9,7 @@ class Mesure extends Model
 {
     protected $fillable = [
         'page_id', 'strategie', 'performance', 'accessibilite', 'bonnes_pratiques', 'seo',
-        'lcp_ms', 'cls', 'inp_ms', 'mesuree_le',
+        'lcp_ms', 'cls', 'inp_ms', 'conseils', 'mesuree_le',
     ];
 
     protected function casts(): array
@@ -17,6 +17,7 @@ class Mesure extends Model
         return [
             'mesuree_le' => 'datetime',
             'cls' => 'float',
+            'conseils' => 'array',
         ];
     }
 

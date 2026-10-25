@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Mesure;
 use App\Models\Page;
+use App\Services\DetecteurBaisse;
 use App\Services\Mediane;
 use App\Services\PageSpeedClient;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -28,7 +29,7 @@ class MesurerPage implements ShouldQueue
         foreach (['mobile', 'desktop'] as $strategie) {
             $mesures = collect(range(1, 3))->map(fn () => $client->mesurer($this->page->url, $strategie));
 
-            Mesure::create([
+            $mesure = Mesure::create([
                 'page_id' => $this->page->id,
                 'strategie' => $strategie,
                 'performance' => $this->mediane($mesures, 'performance'),
@@ -38,8 +39,11 @@ class MesurerPage implements ShouldQueue
                 'lcp_ms' => $this->mediane($mesures, 'lcp_ms'),
                 'cls' => $this->mediane($mesures, 'cls'),
                 'inp_ms' => $this->mediane($mesures, 'inp_ms'),
+                'conseils' => $mesures->last()['conseils'],
                 'mesuree_le' => now(),
             ]);
+
+            DetecteurBaisse::pour($mesure);
         }
     }
 

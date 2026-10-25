@@ -24,4 +24,9 @@ class Page extends Model
     {
         return $this->hasMany(Mesure::class);
     }
+
+    public function alertes(): HasMany
+    {
+        return $this->hasMany(Alerte::class);
+    }
 }

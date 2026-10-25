@@ -9,7 +9,11 @@
     "audits": {
       "largest-contentful-paint": { "numericValue": 2900 },
       "cumulative-layout-shift": { "numericValue": 0.02 },
-      "total-blocking-time": { "numericValue": 150 }
+      "total-blocking-time": { "numericValue": 150 },
+      "uses-optimized-images": {
+        "title": "Compresser les images",
+        "details": { "type": "opportunity", "overallSavingsMs": 1200 }
+      }
     }
   }
 }

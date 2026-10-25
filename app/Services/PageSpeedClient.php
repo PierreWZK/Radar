@@ -14,7 +14,7 @@ class PageSpeedClient
         $this->cle ??= config('services.pagespeed.key');
     }
 
-    /** @return array{performance: int, accessibilite: int, bonnes_pratiques: int, seo: int, lcp_ms: ?int, cls: ?float, inp_ms: ?int} */
+    /** @return array{performance: int, accessibilite: int, bonnes_pratiques: int, seo: int, lcp_ms: ?int, cls: ?float, inp_ms: ?int, conseils: array} */
     public function mesurer(string $url, string $strategie): array
     {
         $requete = http_build_query(['url' => $url, 'strategy' => $strategie, 'key' => $this->cle]);
@@ -43,6 +43,18 @@ class PageSpeedClient
             'lcp_ms' => isset($audits['largest-contentful-paint']) ? (int) round($audits['largest-contentful-paint']['numericValue']) : null,
             'cls' => isset($audits['cumulative-layout-shift']) ? round($audits['cumulative-layout-shift']['numericValue'], 3) : null,
             'inp_ms' => isset($audits['interaction-to-next-paint']) ? (int) round($audits['interaction-to-next-paint']['numericValue']) : null,
+            'conseils' => $this->conseils($audits),
         ];
+    }
+
+    /** Opportunités Lighthouse avec un gain estimé, du plus rentable au moins rentable. */
+    private function conseils(array $audits): array
+    {
+        return collect($audits)
+            ->filter(fn ($audit) => ($audit['details']['type'] ?? null) === 'opportunity' && ($audit['details']['overallSavingsMs'] ?? 0) > 0)
+            ->map(fn ($audit) => ['titre' => $audit['title'], 'gain_ms' => (int) round($audit['details']['overallSavingsMs'])])
+            ->sortByDesc('gain_ms')
+            ->values()
+            ->all();
     }
 }
