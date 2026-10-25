@@ -6,6 +6,7 @@ use App\Exceptions\PageSpeedException;
 use App\Jobs\MesurerPage;
 use App\Models\Mesure;
 use App\Models\Page;
+use App\Models\Site;
 use App\Models\User;
 use App\Services\PageSpeedClient;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -26,8 +27,12 @@ class MesurerPageTest extends TestCase
 
     private function page(): Page
     {
+        $user = User::factory()->create();
+        $site = Site::create(['user_id' => $user->id, 'nom' => 'Projet P', 'url' => 'https://projectp.fr/']);
+
         return Page::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $user->id,
+            'site_id' => $site->id,
             'url' => 'https://projectp.fr/',
         ]);
     }
