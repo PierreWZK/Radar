@@ -12,28 +12,9 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="espace-corps">
+    <body class="espace-corps espace-sombre">
         <div class="espace">
-            <aside class="espace-barre">
-                <a class="espace-logo" href="{{ route('dashboard') }}">
-                    <x-marque />
-                </a>
-
-                <nav class="espace-menu" aria-label="Principale">
-                    <a href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>Tableau de bord</a>
-                    <a href="{{ route('sites.index') }}" @if (request()->routeIs('sites.*')) aria-current="page" @endif>Mes sites</a>
-                    <a href="{{ route('alertes.index') }}" @if (request()->routeIs('alertes.*')) aria-current="page" @endif>Alertes</a>
-                    <a href="{{ route('profile.edit') }}" @if (request()->routeIs('profile.*')) aria-current="page" @endif>Paramètres</a>
-                </nav>
-
-                <div class="espace-compte">
-                    <p>{{ Auth::user()->name }}</p>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="lien-compte">Se déconnecter</button>
-                    </form>
-                </div>
-            </aside>
+            @include('layouts._barre')
 
             <div class="espace-contenu">
                 @isset($header)

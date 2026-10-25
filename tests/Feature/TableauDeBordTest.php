@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Alerte;
 use App\Models\Mesure;
 use App\Models\Page;
 use App\Models\Site;
@@ -21,7 +22,7 @@ class TableauDeBordTest extends TestCase
         return Page::create(['user_id' => $user->id, 'site_id' => $site->id, 'url' => $url]);
     }
 
-    private function mesure(Page $page, int $performance): Mesure
+    private function mesure(Page $page, int $performance, ?\DateTimeInterface $quand = null): Mesure
     {
         return Mesure::create([
             'page_id' => $page->id,
@@ -34,7 +35,7 @@ class TableauDeBordTest extends TestCase
             'cls' => 0.02,
             'inp_ms' => null,
             'conseils' => [],
-            'mesuree_le' => now(),
+            'mesuree_le' => $quand ?? now(),
         ]);
     }
 
@@ -108,5 +109,64 @@ class TableauDeBordTest extends TestCase
         $this->actingAs($user)->get("/pages/{$page->id}")
             ->assertOk()
             ->assertSee('Core Web Vitals');
+    }
+
+    public function test_le_tableau_de_bord_montre_la_page_choisie_et_son_ecart(): void
+    {
+        $user = User::factory()->create();
+        $this->page($user, 'https://mon-site.fr/');
+        $choisie = $this->page($user, 'https://mon-site.fr/contact');
+        $this->mesure($choisie, 90, now()->subDay());
+        $this->mesure($choisie, 92);
+
+        $this->actingAs($user)->get('/dashboard?page='.$choisie->id)
+            ->assertOk()
+            ->assertSee('https://mon-site.fr/contact')
+            ->assertSee('<span class="anneau-chiffre">92</span>', false)
+            ->assertSee('+2');
+    }
+
+    public function test_une_page_d_un_autre_compte_demandee_dans_l_adresse_est_ignoree(): void
+    {
+        $moi = User::factory()->create();
+        $this->page($moi, 'https://mon-site.fr/');
+        $secrete = $this->page(User::factory()->create(), 'https://secret-client.fr/');
+        $this->mesure($secrete, 40);
+
+        $this->actingAs($moi)->get('/dashboard?page='.$secrete->id)
+            ->assertOk()
+            ->assertSee('https://mon-site.fr/')
+            ->assertDontSee('https://secret-client.fr/');
+    }
+
+    public function test_une_alerte_recente_apparait_sur_le_tableau_de_bord(): void
+    {
+        $user = User::factory()->create();
+        $page = $this->page($user);
+        $this->mesure($page, 84);
+        Alerte::create(['page_id' => $page->id, 'strategie' => 'mobile', 'raison' => 'Performance en baisse de 8 points', 'performance_avant' => 92, 'performance_apres' => 84, 'conseils' => [['titre' => 'Compresser les images', 'gain_ms' => 1200]]]);
+
+        $this->actingAs($user)->get('/dashboard')
+            ->assertSee('Alerte détectée')
+            ->assertSee('Compresser les images');
+    }
+
+    public function test_sans_alerte_recente_pas_de_carte_d_alerte(): void
+    {
+        $user = User::factory()->create();
+        $this->mesure($this->page($user), 94);
+
+        $this->actingAs($user)->get('/dashboard')->assertDontSee('Alerte détectée');
+    }
+
+    public function test_les_core_web_vitals_du_tableau_de_bord_suivent_l_offre(): void
+    {
+        $gratuit = User::factory()->create(['plan' => 'gratuit']);
+        $this->mesure($this->page($gratuit), 94);
+        $solo = User::factory()->create(['plan' => 'solo']);
+        $this->mesure($this->page($solo), 94);
+
+        $this->actingAs($gratuit)->get('/dashboard')->assertDontSee('Core Web Vitals');
+        $this->actingAs($solo)->get('/dashboard')->assertSee('Core Web Vitals');
     }
 }

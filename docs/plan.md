@@ -66,6 +66,15 @@ Tests : `php artisan test` (PHPUnit). Chaque étape : tests d'abord, puis code, 
 
 **Terminé** : tests de la page Alertes (seulement les alertes du compte) et de `/exemple` passent ; captures mobile et ordinateur vérifiées.
 
+## Étape 6d · Tableau de bord façon maquette
+
+- Cadre noir, barre latérale avec icônes, panneau clair arrondi.
+- Une page à la fois, choisie dans une liste : anneau Performance avec écart, quatre notes avec écart à la mesure précédente, courbes des quatre notes sur 90 jours, Core Web Vitals colorés selon les seuils (Solo et Agence).
+- Colonne de droite : carte d'alerte magenta (alerte des 7 derniers jours, conseils dépliables), note ordinateur, autres pages.
+- `/exemple` reprend la même vue avec des données fictives.
+
+**Terminé** : tests (page choisie, page d'un autre compte ignorée, alerte affichée ou non, Core Web Vitals selon l'offre) ; captures mobile et ordinateur.
+
 ## Étape 7 · Planification et finitions
 
 - Mesures quotidiennes et hebdomadaires lancées par le planificateur Laravel.

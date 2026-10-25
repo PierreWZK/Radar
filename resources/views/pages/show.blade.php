@@ -29,7 +29,7 @@
         <h2 id="courbe-titre" class="carte-libelle">Performance sur 90 jours</h2>
         <p class="carte-site">{{ $resume }}</p>
         <canvas id="courbe-performance" height="120" aria-hidden="true"></canvas>
-        <table class="sr-only">
+        <div class="sr-only"><table>
             <caption>Notes de performance par jour</caption>
             <thead><tr><th scope="col">Date</th><th scope="col">Mobile</th><th scope="col">Ordinateur</th></tr></thead>
             <tbody>
@@ -37,7 +37,7 @@
                     <tr><th scope="row">{{ $date }}</th><td>{{ $graphique['mobile'][$i] ?? '—' }}</td><td>{{ $graphique['desktop'][$i] ?? '—' }}</td></tr>
                 @endforeach
             </tbody>
-        </table>
+        </table></div>
     </section>
 
     @if ($graphiques)

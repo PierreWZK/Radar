@@ -15,12 +15,38 @@ class DashboardController extends Controller
             ->orderBy('url')
             ->get();
 
-        $cartes = $pages->map(function (Page $page) {
-            $dernieres = $page->mesures()->where('strategie', 'mobile')->latest('mesuree_le')->limit(2)->get();
+        // Une page demandée qui n'appartient pas au compte est ignorée : on retombe sur la première.
+        $page = $pages->firstWhere('id', (int) $request->query('page')) ?? $pages->first();
 
-            return ['page' => $page, 'actuelle' => $dernieres[0] ?? null, 'veille' => $dernieres[1] ?? null];
-        });
+        if (! $page) {
+            return view('dashboard', ['vue' => null]);
+        }
 
-        return view('dashboard', ['cartes' => $cartes]);
+        $mesures = $page->mesures()
+            ->where('mesuree_le', '>=', now()->subDays(90))
+            ->orderBy('mesuree_le')
+            ->get()
+            ->groupBy('strategie');
+        $mobile = $mesures->get('mobile', collect())->values();
+
+        $vue = [
+            'pages' => $pages,
+            'page' => $page,
+            'actuelle' => $mobile->last(),
+            'precedente' => $mobile->count() > 1 ? $mobile[$mobile->count() - 2] : null,
+            'ordinateur' => $mesures->get('desktop', collect())->last(),
+            'alerte' => $page->alertes()->where('created_at', '>=', now()->subDays(7))->latest()->first(),
+            'graphique' => [
+                'dates' => $mobile->map(fn ($m) => $m->mesuree_le->format('d/m')),
+                'performance' => $mobile->pluck('performance'),
+                'accessibilite' => $mobile->pluck('accessibilite'),
+                'bonnes_pratiques' => $mobile->pluck('bonnes_pratiques'),
+                'seo' => $mobile->pluck('seo'),
+            ],
+            'graphiques' => $request->user()->offre()['graphiques'],
+            'lecture' => false,
+        ];
+
+        return view('dashboard', ['vue' => $vue]);
     }
 }

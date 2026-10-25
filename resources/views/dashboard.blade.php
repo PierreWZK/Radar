@@ -1,16 +1,13 @@
 <x-app-layout>
-    <x-slot name="header">
-        <p class="surtitre">Tableau de bord</p>
-        <h1 class="radar-titre titre-page">Vos pages</h1>
-    </x-slot>
+    <h1 class="sr-only">Tableau de bord</h1>
 
-    @if ($cartes->isEmpty())
-        <p>Aucune page suivie. <a class="underline" href="{{ route('sites.create') }}">Ajoutez un site</a> pour commencer.</p>
+    @if ($vue)
+        @include('dashboard._vue', ['vue' => $vue])
+    @else
+        <section class="tdb2-carte tdb2-vide">
+            <h2 class="radar-titre titre-page">Bienvenue sur Radar.</h2>
+            <p>Aucune page suivie pour le moment. Ajoutez un site : Radar le mesure et vous prévient dès que la note baisse.</p>
+            <a class="bouton-encre" href="{{ route('sites.create') }}">Ajouter un site <span aria-hidden="true">→</span></a>
+        </section>
     @endif
-
-    <div class="cartes">
-        @foreach ($cartes as $carte)
-            @include('dashboard._carte', ['carte' => $carte, 'lien' => true])
-        @endforeach
-    </div>
 </x-app-layout>
