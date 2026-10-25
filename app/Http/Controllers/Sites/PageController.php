@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Sites;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\MesurerPage;
 use App\Models\Page;
+use App\Services\Planification;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -51,7 +53,10 @@ class PageController extends Controller
             return back()->withErrors(['url' => "Votre offre permet {$limite} page(s) par site."])->withInput();
         }
 
-        $site->pages()->create(['user_id' => $request->user()->id, 'url' => $donnees['url']]);
+        $page = $site->pages()->create(['user_id' => $request->user()->id, 'url' => $donnees['url']]);
+
+        // Première mesure tout de suite, sans attendre la tournée de 3 h
+        MesurerPage::dispatch($page, Planification::appareils($page));
 
         return redirect()->route('sites.show', $site);
     }
