@@ -26,9 +26,15 @@ class PageController extends Controller
             'desktop' => $mesures->get('desktop', collect())->pluck('performance')->values(),
         ];
 
+        $notesMobile = $graphique['mobile'];
+        $resume = $notesMobile->isEmpty()
+            ? 'Pas encore de mesure mobile.'
+            : "Mobile : dernière note {$notesMobile->last()}, plus haute {$notesMobile->max()}, plus basse {$notesMobile->min()}.";
+
         return view('pages.show', [
             'page' => $page,
             'graphique' => $graphique,
+            'resume' => $resume,
             'derniere' => $mesures->get('mobile', collect())->last(),
             'graphiques' => $request->user()->offre()['graphiques'],
         ]);

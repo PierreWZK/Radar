@@ -1,0 +1,235 @@
+/* Espace connecté et page d'exemple : barre latérale noire, cartes blanches, mêmes tokens que l'accueil. */
+.espace-corps {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  min-height: 100vh;
+}
+
+.espace {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.espace-barre {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem var(--gutter);
+  background: var(--color-ink);
+  color: var(--color-sky-light);
+  overflow-x: auto;
+}
+
+.espace-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  flex: none;
+  color: var(--color-white);
+  font: 800 1.4rem/1 var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+.espace-logo .logo-marque { width: 2rem; height: 2rem; }
+
+.espace-menu { display: flex; gap: 0.25rem; }
+
+.espace-menu a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.9rem;
+  border-radius: var(--radius-round);
+  white-space: nowrap;
+  color: var(--color-sky-light);
+  font-weight: 500;
+}
+
+.espace-menu a[aria-current="page"] { background: #2b2b2b; color: var(--color-white); font-weight: 600; }
+
+.espace-compte {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: none;
+  font-size: 0.875rem;
+}
+
+.espace-compte form { display: contents; }
+
+.lien-compte {
+  min-height: 44px;
+  padding: 0 0.25rem;
+  background: none;
+  border: 0;
+  color: var(--color-sky-light);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.espace-contenu {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) var(--gutter);
+}
+
+.espace-entete { margin-bottom: 2rem; }
+.surtitre + .titre-page { margin-top: 0.5rem; }
+.titre-page { font-size: clamp(2.25rem, 4.5vw, 3.5rem); }
+
+@media (min-width: 900px) {
+  .espace { flex-direction: row; }
+
+  .espace-barre {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2rem;
+    width: 248px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    padding: 1.5rem 1rem;
+    overflow: visible;
+  }
+
+  .espace-menu { flex-direction: column; gap: 0.25rem; }
+  .espace-menu a { border-radius: 12px; }
+  .espace-compte { margin: auto 0 0; flex-direction: column; align-items: flex-start; }
+}
+
+/* Cartes de page et d'alerte */
+.cartes, .alertes {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+}
+
+.alertes { grid-template-columns: minmax(0, 1fr); }
+
+.carte-page {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  padding: 1.5rem;
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  box-shadow: 0 24px 48px -32px rgba(10, 10, 10, 0.3);
+  min-width: 0;
+}
+
+.carte-site { font-size: 0.875rem; color: var(--color-muted); font-weight: 600; }
+.carte-url { font-weight: 700; overflow-wrap: anywhere; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; display: inline-flex; align-items: center; }
+
+.carte-score {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.75rem 0;
+}
+
+.carte-score .anneau { width: 96px; flex: none; }
+.carte-score .anneau-chiffre { font-size: 1.9rem; }
+.carte-libelle { font-size: 0.875rem; color: var(--color-muted); }
+.carte-hausse { font-weight: 600; color: var(--color-good); }
+
+.carte-notes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
+
+.anneau-arc.arc-mauvais { stroke: var(--color-alert); }
+
+.conseils { display: grid; gap: 0.5rem; margin-top: 1rem; padding: 0; list-style: none; counter-reset: conseil; }
+
+.conseils li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0.9rem;
+  background: var(--color-sky-light);
+  border-radius: 12px;
+}
+
+.conseils b { white-space: nowrap; }
+
+/* Page d'exemple */
+.exemple-entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.5rem var(--gutter);
+  background: var(--color-ink);
+}
+
+.exemple-compte { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.exemple-compte .lien-nav { color: var(--color-sky-light); }
+.exemple-compte .bouton-encre { background: var(--color-white); color: var(--color-ink); }
+.exemple-compte .bouton-encre:hover { background: var(--color-sky-light); }
+
+.bandeau-exemple {
+  padding: 0.75rem 1rem;
+  background: var(--color-sand);
+  border-radius: 12px;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.exemple-appel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  background: var(--color-sky);
+  border-radius: var(--radius-card);
+}
+
+@media (max-width: 479px) {
+  .carte-notes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .espace-menu a, .bouton-encre { transition: none; }
+}
+
+/* Fiche de page */
+.fiche-score { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
+.fiche-principale { display: flex; align-items: center; gap: 1.25rem; }
+.fiche-principale .anneau { width: 120px; flex: none; }
+.fiche-principale .anneau-chiffre { font-size: 2.4rem; }
+.fiche-notes { max-width: 640px; }
+.fiche-courbe { margin-bottom: 1.5rem; display: grid; gap: 0.5rem; }
+.fiche-courbe canvas { width: 100% !important; height: auto !important; }
+.vitaux { display: grid; gap: 0.5rem; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+.vitaux li { display: grid; gap: 0.25rem; padding: 1rem; background: var(--color-sky-light); border-radius: 16px; }
+.vitaux span { font-size: 0.8rem; color: var(--color-muted); font-weight: 600; }
+.vitaux b { font: 800 1.6rem/1 var(--font-display); }
+@media (min-width: 900px) { .fiche-score { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; } }
+.fiche-notes .radar-note { align-self: center; }
+.fiche-score { align-items: center; }
+
+/* Sites et formulaires de l espace connecté */
+.carte-lien { text-decoration: none; }
+.carte-lien:hover { box-shadow: 0 24px 48px -24px rgba(10, 10, 10, 0.4); }
+.pages-liste { display: grid; gap: 0.5rem; margin: 0.75rem 0 1rem; padding: 0; list-style: none; }
+.pages-liste li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.5rem 0.9rem; background: var(--color-paper); border-radius: 12px; }
+.pages-liste .carte-url { min-height: 0; font-size: 0.95rem; }
+.formulaire-ligne { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.formulaire-ligne .champ { flex: 1 1 240px; }
+.formulaire { display: grid; gap: 1.25rem; max-width: 560px; }
+.champ-groupe { display: grid; gap: 0.4rem; }
+.champ-groupe label, .formulaire > label { font-weight: 600; }
+.champ { min-height: 44px; padding: 0.6rem 0.9rem; border: 1px solid #c9d2d8; border-radius: 12px; background: var(--color-white); font: inherit; color: var(--color-ink); }
+.champ:focus-visible { outline: 3px solid var(--color-ink); outline-offset: 2px; }
+.case { display: flex; gap: 0.6rem; align-items: center; min-height: 44px; }
+.case input { width: 1.1rem; height: 1.1rem; accent-color: var(--color-alert); }
+.texte-erreur { color: var(--color-alert); font-weight: 600; font-size: 0.9rem; }
+.bandeau-exemple + .carte-page { margin-top: 0; }

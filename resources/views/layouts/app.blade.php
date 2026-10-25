@@ -5,32 +5,47 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>Radar</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=bricolage-grotesque:800|hanken-grotesk:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=bricolage-grotesque:800|hanken-grotesk:400,500,600,700&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+    <body class="espace-corps">
+        <div class="espace">
+            <aside class="espace-barre">
+                <a class="espace-logo" href="{{ route('dashboard') }}">
+                    <x-marque />
+                </a>
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <nav class="espace-menu" aria-label="Principale">
+                    <a href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif>Tableau de bord</a>
+                    <a href="{{ route('sites.index') }}" @if (request()->routeIs('sites.*')) aria-current="page" @endif>Mes sites</a>
+                    <a href="{{ route('alertes.index') }}" @if (request()->routeIs('alertes.*')) aria-current="page" @endif>Alertes</a>
+                    <a href="{{ route('profile.edit') }}" @if (request()->routeIs('profile.*')) aria-current="page" @endif>Paramètres</a>
+                </nav>
+
+                <div class="espace-compte">
+                    <p>{{ Auth::user()->name }}</p>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="lien-compte">Se déconnecter</button>
+                    </form>
+                </div>
+            </aside>
+
+            <div class="espace-contenu">
+                @isset($header)
+                    <header class="espace-entete">
                         {{ $header }}
-                    </div>
-                </header>
-            @endisset
+                    </header>
+                @endisset
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <main>
+                    {{ $slot }}
+                </main>
+            </div>
         </div>
     </body>
 </html>

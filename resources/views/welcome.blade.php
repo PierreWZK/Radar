@@ -64,7 +64,7 @@
                 <div class="heros-ancres">
                     <a href="#fonctionnalites">Fonctionnalités</a>
                     <a href="#tarifs">Tarifs</a>
-                    <a href="#comment">Exemples</a>
+                    <a href="{{ route('exemple') }}">Exemples</a>
                     <a href="#faq">FAQ</a>
                 </div>
                 <div class="heros-compte">
@@ -95,7 +95,7 @@
                     </ul>
                     <div class="heros-actions">
                         <a class="bouton-encre bouton-grand" href="{{ route('tester') }}">Tester gratuitement <span aria-hidden="true">→</span></a>
-                        <a class="lien-lecture" href="#comment">Voir un exemple
+                        <a class="lien-lecture" href="{{ route('exemple') }}">Voir un exemple
                             <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8"/><path d="M6.5 5 L11 8 L6.5 11 Z" fill="#fff"/></svg>
                         </a>
                     </div>

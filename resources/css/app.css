@@ -1,5 +1,6 @@
 @import "./radar.css";
 @import "./accueil.css";
+@import "./espace.css";
 
 @tailwind base;
 @tailwind components;

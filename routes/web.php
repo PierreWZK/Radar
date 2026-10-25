@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AlerteController;
 use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExempleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Sites\PageController;
 use App\Http\Controllers\Sites\SiteController;
@@ -14,9 +16,12 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/exemple', [ExempleController::class, 'index'])->name('exemple');
+
 Route::get('/badge/{page}.svg', [BadgeController::class, 'svg'])->name('badge');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/alertes', [AlerteController::class, 'index'])->name('alertes.index');
     Route::get('/pages/{page}', [PageController::class, 'show'])->name('pages.show');
     Route::get('/sites', [SiteController::class, 'index'])->name('sites.index');
     Route::get('/sites/create', [SiteController::class, 'create'])->name('sites.create');

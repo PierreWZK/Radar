@@ -1,15 +1,19 @@
 <x-app-layout>
-    <div class="py-12 max-w-4xl mx-auto sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-bold mb-6">Mes sites</h1>
+    <x-slot name="header">
+        <p class="surtitre">Sites</p>
+        <h1 class="radar-titre titre-page">Mes sites</h1>
+    </x-slot>
 
-        <a href="{{ route('sites.create') }}" class="underline">Ajouter un site</a>
+    <a class="bouton-encre" href="{{ route('sites.create') }}">Ajouter un site <span aria-hidden="true">→</span></a>
 
-        <ul class="mt-6 space-y-3">
-            @forelse ($sites as $site)
-                <li><a class="underline" href="{{ route('sites.show', $site) }}">{{ $site->nom }}</a> · {{ $site->url }}</li>
-            @empty
-                <li>Aucun site pour le moment.</li>
-            @endforelse
-        </ul>
+    <div class="cartes mt-8">
+        @forelse ($sites as $site)
+            <a class="carte-page carte-lien" href="{{ route('sites.show', $site) }}">
+                <p class="carte-url">{{ $site->nom }}</p>
+                <p class="carte-site">{{ $site->url }}@if ($site->site_entier) · Site entier @endif</p>
+            </a>
+        @empty
+            <p>Aucun site pour le moment.</p>
+        @endforelse
     </div>
 </x-app-layout>
