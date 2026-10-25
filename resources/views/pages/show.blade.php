@@ -15,8 +15,21 @@
         @endif
 
         <section class="radar-carte mt-8">
-            <h2 class="font-semibold mb-4">Performance sur 90 jours</h2>
-            <canvas id="courbe-performance" height="120"></canvas>
+            <h2 class="font-semibold mb-2">Performance sur 90 jours</h2>
+            @php($notesMobile = collect($graphique['mobile']))
+            @if ($notesMobile->isNotEmpty())
+                <p class="mb-4">Mobile : dernière note {{ $notesMobile->last() }}, plus haute {{ $notesMobile->max() }}, plus basse {{ $notesMobile->min() }}.</p>
+            @endif
+            <canvas id="courbe-performance" height="120" aria-hidden="true"></canvas>
+            <table class="sr-only">
+                <caption>Notes de performance par jour</caption>
+                <thead><tr><th scope="col">Date</th><th scope="col">Mobile</th><th scope="col">Ordinateur</th></tr></thead>
+                <tbody>
+                    @foreach ($graphique['dates'] as $i => $date)
+                        <tr><th scope="row">{{ $date }}</th><td>{{ $graphique['mobile'][$i] ?? '—' }}</td><td>{{ $graphique['desktop'][$i] ?? '—' }}</td></tr>
+                    @endforeach
+                </tbody>
+            </table>
         </section>
 
         @if ($graphiques)
@@ -35,7 +48,7 @@
         @endif
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
     <script>
         const donnees = @json($graphique);
         new Chart(document.getElementById('courbe-performance'), {
