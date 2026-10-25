@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar · moodboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=Bebas+Neue&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { font: 16px/1.5 "Hanken Grotesk", system-ui, sans-serif; background: #f4f4f2; color: #111; }
+  .intro { padding: 48px 32px 24px; max-width: 1200px; margin: auto; }
+  .intro h1 { font-size: 28px; }
+  .dir { margin: 32px auto 64px; max-width: 1200px; padding: 0 32px; }
+  .dir > h2 { font-size: 22px; margin-bottom: 4px; }
+  .mood { font-size: 18px; margin-bottom: 24px; max-width: 70ch; }
+  .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+  .swatches { display: flex; gap: 8px; }
+  .sw { flex: 1; height: 96px; border-radius: 8px; padding: 8px; font-size: 13px; display: flex; align-items: flex-end; }
+  .fonts p { margin-bottom: 8px; }
+  .stage { border-radius: 12px; overflow: hidden; }
+  @media (max-width: 760px) { .meta { grid-template-columns: 1fr; } }
+
+  /* A · Balayage */
+  .a { --ground: #cbe4f2; --sand: #f1e3b5; --ink: #0a0a0a; --accent: #b0298f; }
+  .a .title { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; letter-spacing: -0.04em; line-height: .92; }
+  .a-hero { background: var(--ground); color: var(--ink); position: relative; min-height: 560px; padding: 32px; overflow: hidden; }
+  .a-hero nav { display: flex; justify-content: space-between; font-weight: 600; position: relative; z-index: 1; }
+  .a-hero .copy { position: relative; z-index: 1; max-width: 560px; margin-top: 88px; }
+  .a-hero h3 { font-size: clamp(44px, 6.4vw, 88px); }
+  .a-hero p { font-size: 20px; margin: 32px 0; max-width: 34ch; }
+  .a-btn { display: inline-block; background: var(--accent); color: #fff; font-weight: 600; padding: 14px 26px; border-radius: 999px; text-decoration: none; }
+  .a-radar { position: absolute; right: -180px; top: 50%; width: 720px; height: 720px; transform: translateY(-50%); }
+  .a-radar { right: -120px; }
+  .a-radar .sweep { transform-origin: 360px 360px; animation: sweep 6s linear infinite; }
+  .a-radar .ping { transform-box: fill-box; transform-origin: center; opacity: 0; animation: ping 6s ease-out infinite; }
+  .a-radar .zone { font: 500 13px "Hanken Grotesk", sans-serif; fill: #44606e; }
+  .a-radar .blip { font: 600 15px "Hanken Grotesk", sans-serif; fill: #0a0a0a; }
+  .a-radar .blip.down { fill: #b0298f; }
+  @keyframes sweep { to { transform: rotate(360deg); } }
+  @keyframes ping { 0% { transform: scale(1); opacity: .5; } 18% { transform: scale(3.2); opacity: 0; } 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .a-radar .sweep, .a-radar .ping { animation: none; } }
+  @media (max-width: 760px) { .a-radar { width: 520px; height: 520px; right: -260px; top: auto; bottom: -200px; transform: none; } }
+  .a-cards { background: var(--sand); padding: 48px 32px; display: flex; gap: 24px; flex-wrap: wrap; }
+  .a-card { background: var(--ground); border-radius: 24px; padding: 28px; width: 380px; max-width: 100%; color: var(--ink); }
+  .a-card .url { font-weight: 600; }
+  .a-card .scores { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 20px 0; }
+  .a-card .s { background: var(--sand); border-radius: 999px; aspect-ratio: 1; padding: 12px; display: grid; place-items: center; text-align: center; font-size: 12px; }
+  .a-card .s b { display: block; font: 800 28px/1 "Bricolage Grotesque", sans-serif; }
+  .a-card .s.down { background: var(--accent); color: #fff; }
+  .a-card .alert { font-size: 15px; }
+
+  /* B · Bulletin */
+  .b { --ground: #ffffff; --ink: #000; --accent: #fe7141; --sage: #d1ddd3; }
+  .b .title { font-family: "Bebas Neue", sans-serif; letter-spacing: -0.02em; line-height: .85; text-transform: uppercase; }
+  .b .stage, .b .stage p { font-family: "Source Sans 3", sans-serif; }
+  .b-hero { background: var(--accent); color: var(--ink); min-height: 560px; padding: 32px 40px; display: flex; flex-direction: column; }
+  .b-hero nav { display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; }
+  .b-hero h3 { font-size: clamp(88px, 15vw, 220px); margin-top: auto; }
+  .b-hero .foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-top: 32px; flex-wrap: wrap; }
+  .b-hero .foot p { font-size: 22px; max-width: 32ch; }
+  .b-btn { background: var(--ink); color: #fff; font-weight: 600; padding: 16px 28px; text-decoration: none; }
+  .b-cards { background: var(--sage); padding: 48px 40px; display: flex; gap: 24px; flex-wrap: wrap; }
+  .b-card { background: var(--ground); width: 400px; max-width: 100%; color: var(--ink); }
+  .b-card .top { background: var(--ink); color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; font-weight: 600; }
+  .b-card .big { display: flex; align-items: baseline; gap: 16px; padding: 20px 20px 0; }
+  .b-card .big b { font: 400 120px/.85 "Bebas Neue", sans-serif; }
+  .b-card .big .delta { font: 400 48px/1 "Bebas Neue", sans-serif; background: var(--accent); padding: 10px 14px 4px; }
+  .b-card .row { display: grid; grid-template-columns: repeat(3, 1fr); padding: 16px 20px; gap: 8px; }
+  .b-card .row div { background: var(--sage); padding: 10px; }
+  .b-card .row b { font: 400 36px/1 "Bebas Neue", sans-serif; display: block; }
+  .b-card .tip { background: var(--accent); padding: 16px 20px; }
+</style>
+</head>
+<body>
+<header class="intro">
+  <h1>Radar · deux directions</h1>
+  <p>Choisis A ou B (ou un mélange précis). Les notes et l'alerte sont l'exemple du cahier des charges.</p>
+</header>
+
+<!-- ============ A ============ -->
+<section class="dir a">
+  <h2>A · Balayage</h2>
+  <p class="mood">Un écran de radar en plein jour : le cercle qui balaie revient partout (boutons ronds, notes en pastilles, graphiques en anneaux), sur un ciel pâle et du sable, avec le magenta réservé à ce qui a baissé.</p>
+  <div class="meta">
+    <div class="swatches">
+      <div class="sw" style="background:#cbe4f2">Ciel #cbe4f2</div>
+      <div class="sw" style="background:#f1e3b5">Sable #f1e3b5</div>
+      <div class="sw" style="background:#0a0a0a;color:#fff">Encre #0a0a0a</div>
+      <div class="sw" style="background:#b0298f;color:#fff">Alerte #b0298f</div>
+    </div>
+    <div class="fonts">
+      <p class="title" style="font-size:40px">Bricolage Grotesque</p>
+      <p>Titres : Bricolage Grotesque 800, serré, très expressif. Texte : <b>Hanken Grotesk</b> 400/600, net et moderne.</p>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="a-hero">
+      <nav><span>Radar</span><span>Offres · Connexion</span></nav>
+      <!-- Zones = seuils Lighthouse (centre 100, anneau 90, anneau 50) ; chaque note est un écho à sa distance du centre -->
+      <svg class="a-radar" viewBox="0 0 720 720" role="img" aria-label="Radar des quatre notes : performance 94 en baisse de 3, accessibilité 100, bonnes pratiques 96, SEO 92">
+        <circle cx="360" cy="360" r="360" fill="#b3d6ea"/>
+        <circle cx="360" cy="360" r="300" fill="#bfdcee"/>
+        <circle cx="360" cy="360" r="200" fill="#d3e9f5"/>
+        <circle cx="360" cy="360" r="350" fill="none" stroke="#0a0a0a" stroke-opacity=".28" stroke-width="12" stroke-dasharray="2 28.54"/>
+        <text x="368" y="156" class="zone">90</text>
+        <text x="368" y="56" class="zone">50</text>
+        <g class="sweep">
+          <path d="M360 360 L540 48.2 A360 360 0 0 1 614.6 105.4 Z" fill="#0a0a0a" opacity=".03"/>
+          <path d="M360 360 L614.6 105.4 A360 360 0 0 1 671.8 180 Z" fill="#0a0a0a" opacity=".06"/>
+          <path d="M360 360 L671.8 180 A360 360 0 0 1 707.7 266.8 Z" fill="#0a0a0a" opacity=".1"/>
+          <path d="M360 360 L707.7 266.8 A360 360 0 0 1 720 360 Z" fill="#0a0a0a" opacity=".16"/>
+        </g>
+        <line x1="390" y1="308" x2="420" y2="256" stroke="#b0298f" stroke-width="3" stroke-dasharray="4 5"/>
+        <circle cx="390" cy="308" r="7" fill="none" stroke="#b0298f" stroke-width="3"/>
+        <circle class="ping" style="animation-delay:5s" cx="420" cy="256" r="12" fill="#b0298f"/>
+        <circle cx="420" cy="256" r="12" fill="#b0298f"/>
+        <text x="440" y="250" class="blip down">Perf 94 −3</text>
+        <circle class="ping" style="animation-delay:.33s" cx="398" cy="374" r="8" fill="#0a0a0a"/>
+        <circle cx="398" cy="374" r="8" fill="#0a0a0a"/>
+        <text x="414" y="398" class="blip">Access. 100</text>
+        <circle class="ping" style="animation-delay:2s" cx="320" cy="429" r="8" fill="#0a0a0a"/>
+        <circle cx="320" cy="429" r="8" fill="#0a0a0a"/>
+        <text x="250" y="462" class="blip">Pratiques 96</text>
+        <circle class="ping" style="animation-delay:3.33s" cx="210" cy="305" r="8" fill="#0a0a0a"/>
+        <circle cx="210" cy="305" r="8" fill="#0a0a0a"/>
+        <text x="150" y="285" class="blip">SEO 92</text>
+        <circle cx="360" cy="360" r="5" fill="#0a0a0a"/>
+      </svg>
+      <div class="copy">
+        <h3 class="title">Votre note a baissé. Voici pourquoi.</h3>
+        <p>Radar mesure vos pages chaque jour et vous prévient dès qu'un déploiement fait chuter la note, avec trois conseils pour la remonter.</p>
+        <a class="a-btn" href="#">Tester mon site</a>
+      </div>
+    </div>
+    <div class="a-cards">
+      <article class="a-card">
+        <p class="url">sursaut.projectp.fr · mobile</p>
+        <div class="scores">
+          <div class="s down"><span><b>94</b>Perf −3</span></div>
+          <div class="s"><span><b>100</b>Access.</span></div>
+          <div class="s"><span><b>96</b>Pratiques</span></div>
+          <div class="s"><span><b>92</b>SEO</span></div>
+        </div>
+        <p class="alert"><b>LCP 2,9 s</b> (était 2,1 s) depuis le déploiement d'hier : une image de 640 Ko ajoutée sur l'accueil.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ B ============ -->
+<section class="dir b">
+  <h2>B · Bulletin</h2>
+  <p class="mood">Le bulletin de notes affiché en gros : les chiffres sont les héros, en capitales condensées sur des aplats francs orange, sauge et noir, comme une une de journal qui annonce la baisse.</p>
+  <div class="meta">
+    <div class="swatches">
+      <div class="sw" style="background:#ffffff">Papier #ffffff</div>
+      <div class="sw" style="background:#000;color:#fff">Encre #000000</div>
+      <div class="sw" style="background:#fe7141">Orange #fe7141</div>
+      <div class="sw" style="background:#d1ddd3">Sauge #d1ddd3</div>
+    </div>
+    <div class="fonts">
+      <p class="title" style="font-size:48px">Bebas Neue</p>
+      <p style="font-family:'Source Sans 3'">Titres : Bebas Neue, capitales condensées, chiffres énormes. Texte : <b>Source Sans 3</b> 400/600, lisible et moderne.</p>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="b-hero">
+      <nav><span>RADAR</span><span>Offres · Connexion · <u>Tester mon site</u></span></nav>
+      <h3 class="title">Perf 94 −3<br>depuis mardi</h3>
+      <div class="foot">
+        <p>Radar suit les notes Lighthouse de vos pages chaque jour et vous dit ce qui a cassé, et comment réparer.</p>
+        <a class="b-btn" href="#">Tester mon site</a>
+      </div>
+    </div>
+    <div class="b-cards">
+      <article class="b-card">
+        <div class="top"><span>sursaut.projectp.fr</span><span>Mobile · 21 oct.</span></div>
+        <div class="big"><b class="title">94</b><span class="delta">−3 perf</span></div>
+        <div class="row">
+          <div><b>100</b>Accessibilité</div>
+          <div><b>96</b>Pratiques</div>
+          <div><b>92</b>SEO</div>
+        </div>
+        <p class="tip"><b>Conseil n°1 :</b> compresser l'image de 640 Ko de l'accueil. LCP 2,9 s, était 2,1 s.</p>
+      </article>
+    </div>
+  </div>
+</section>
+</body>
+</html>

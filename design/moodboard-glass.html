@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar · glass bleu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --blue: #2563eb; --sky: #3b82f6; --ink: #0b1b3a; --text: #eef4ff; --orange: #c2410c; }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    font: 16px/1.5 "Plus Jakarta Sans", system-ui, sans-serif;
+    color: var(--text);
+    background: #0b1b3a;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: ""; position: fixed; inset: -20%; z-index: -1;
+    background:
+      radial-gradient(40% 40% at 20% 20%, #3b82f6 0%, transparent 70%),
+      radial-gradient(40% 40% at 80% 30%, #2563eb 0%, transparent 70%),
+      radial-gradient(50% 50% at 50% 90%, #1e40af 0%, transparent 70%);
+  }
+  .glass {
+    background: rgba(255, 255, 255, .14);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, .25);
+    border-radius: 24px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, .25);
+  }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 32px; }
+  nav .glass { padding: 10px 18px; border-radius: 999px; font-weight: 700; }
+  nav .links { display: flex; gap: 20px; font-weight: 500; }
+  .hero { padding: 64px 32px 48px; max-width: 1100px; margin: auto; display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+  .hero h1 { font-size: clamp(40px, 5.6vw, 72px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; }
+  .hero p.lead { font-size: 19px; margin: 24px 0 32px; max-width: 46ch; opacity: .9; }
+  .btn { display: inline-block; padding: 14px 26px; border-radius: 14px; font-weight: 700; text-decoration: none; color: #fff; background: var(--orange); }
+  .btn.ghost { background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3); margin-left: 12px; box-shadow: none; backdrop-filter: blur(10px); }
+  .card { padding: 26px; }
+  .card .url { font-weight: 700; margin-bottom: 18px; opacity: .9; }
+  .scores { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+  .score { border-radius: 16px; padding: 14px 8px; text-align: center; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); }
+  .score b { display: block; font-size: 28px; font-weight: 800; }
+  .score span { font-size: 12px; opacity: .85; }
+  .score.down { background: rgba(194, 65, 12, .45); }
+  .alert { font-size: 15px; padding: 14px 16px; border-radius: 16px; background: rgba(15, 30, 70, .35); }
+  .features { max-width: 1100px; margin: 0 auto; padding: 16px 32px 64px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .features .glass { padding: 26px; }
+  .features h2 { font-size: 20px; margin-bottom: 8px; }
+  .features p { opacity: .9; font-size: 15px; }
+  @media (max-width: 760px) {
+    .hero, .features { grid-template-columns: 1fr; padding-left: 16px; padding-right: 16px; }
+    nav .links { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<nav>
+  <div class="glass">Radar</div>
+  <div class="links glass" style="padding:10px 20px;border-radius:999px"><span>Offres</span><span>Exemple</span><span>Connexion</span></div>
+</nav>
+
+<header class="hero">
+  <div>
+    <h1>Votre note a baissé. Voici pourquoi.</h1>
+    <p class="lead">Radar mesure vos pages chaque jour et vous prévient dès qu'un déploiement fait chuter la note, avec trois conseils pour la remonter.</p>
+    <a class="btn" href="#">Tester mon site</a><a class="btn ghost" href="#">Voir un exemple</a>
+  </div>
+  <article class="glass card">
+    <p class="url">sursaut.projectp.fr · mobile</p>
+    <div class="scores">
+      <div class="score down"><b>94</b><span>Perf −3</span></div>
+      <div class="score"><b>100</b><span>Access.</span></div>
+      <div class="score"><b>96</b><span>Pratiques</span></div>
+      <div class="score"><b>92</b><span>SEO</span></div>
+    </div>
+    <p class="alert"><b>LCP 2,9 s</b> (était 2,1 s) depuis le déploiement d'hier : une image de 640 Ko ajoutée sur l'accueil.</p>
+  </article>
+</header>
+
+<section class="features">
+  <div class="glass"><h2>Alerte après déploiement</h2><p>Une vraie baisse déclenche un e-mail. Le bruit de 2 points, non.</p></div>
+  <div class="glass"><h2>Graphique sur 90 jours</h2><p>Les quatre notes et les Core Web Vitals, déploiements marqués.</p></div>
+  <div class="glass"><h2>Trois conseils rentables</h2><p>Les corrections qui font gagner le plus de points, classées.</p></div>
+</section>
+</body>
+</html>

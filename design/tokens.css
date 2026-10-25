@@ -1,0 +1,79 @@
+/* Radar · direction A « Balayage » : écran de radar en plein jour.
+   Tous les composants lisent ces variables, jamais de valeur en dur. */
+
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Hanken+Grotesk:wght@400;500;600&display=swap");
+
+:root {
+  /* Couleurs : un fond, une encre, une alerte ; le sable tient des sections entières */
+  --color-sky: #cbe4f2;          /* fond principal */
+  --color-sky-deep: #b3d6ea;     /* zone < 50 du radar, surfaces en retrait */
+  --color-sky-mid: #bfdcee;      /* zone 50-89, cartes posées sur le ciel */
+  --color-sky-light: #d3e9f5;    /* zone 90-100, survol */
+  --color-sand: #f1e3b5;         /* sections alternées, pastilles */
+  --color-ink: #0a0a0a;          /* texte, échos du radar */
+  --color-muted: #44606e;        /* notes secondaires uniquement */
+  --color-alert: #b0298f;        /* ce qui a baissé + action principale */
+  --color-on-alert: #ffffff;
+
+  /* États des notes (seuils Lighthouse), toujours doublés d'un texte */
+  --color-score-good: var(--color-ink);
+  --color-score-drop: var(--color-alert);
+  --color-focus: var(--color-alert);
+
+  /* Typographie */
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-text: "Hanken Grotesk", system-ui, sans-serif;
+  --weight-display: 800;
+  --weight-text: 400;
+  --weight-strong: 600;
+  --tracking-display: -0.04em;
+  --leading-display: 0.92;
+  --leading-text: 1.5;
+
+  /* Échelle : peu de tailles, un grand écart entre titre et texte */
+  --text-sm: 0.875rem;                          /* 14px : légendes */
+  --text-base: 1.0625rem;                       /* 17px : texte courant */
+  --text-lg: 1.25rem;                           /* 20px : chapô */
+  --text-score: clamp(1.75rem, 3vw, 2.5rem);    /* notes dans les pastilles */
+  --text-h2: clamp(2rem, 4vw, 3.5rem);
+  --text-h1: clamp(2.75rem, 6.4vw, 5.5rem);
+
+  /* Espacements (base 8) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-section: clamp(5rem, 12vw, 10rem);
+  --gutter: clamp(1rem, 3vw, 2rem);             /* marges extérieures égales */
+
+  /* Rayons : le cercle est le motif, donc boutons et pastilles ronds */
+  --radius-sm: 8px;
+  --radius-card: 24px;
+  --radius-round: 999px;
+
+  /* Ombres : rien au repos, seulement ce qui flotte (menu, dialogue) */
+  --shadow-none: none;
+  --shadow-float: 0 12px 32px rgb(10 10 10 / 0.18);
+
+  /* Animations */
+  --duration-fast: 120ms;       /* appui */
+  --duration-base: 200ms;       /* survol, focus */
+  --duration-enter: 480ms;      /* apparition au scroll */
+  --duration-sweep: 6s;         /* tour du balayage radar */
+  --stagger: 70ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --rise: 24px;                 /* distance d'apparition */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-enter: 0ms;
+    --duration-sweep: 0s;
+    --rise: 0px;
+  }
+}
