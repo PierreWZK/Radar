@@ -1,0 +1,91 @@
+/* Tokens de design/tokens.css, repris ici pour que Vite les construise avec l'application. */
+:root {
+  --color-sky: #cbe4f2;
+  --color-sky-deep: #b3d6ea;
+  --color-sky-mid: #bfdcee;
+  --color-sky-light: #d3e9f5;
+  --color-sand: #f1e3b5;
+  --color-ink: #0a0a0a;
+  --color-muted: #44606e;
+  --color-alert: #b0298f;
+  --color-on-alert: #ffffff;
+  --color-paper: #f8f7f3;
+  --color-sand-light: #fbf1dc;
+  --color-white: #ffffff;
+  --color-line: #e3e7ea;
+  --color-good: #2e7d4f;
+  --color-warn: #c2770a;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-text: "Hanken Grotesk", system-ui, sans-serif;
+  --radius-card: 24px;
+  --radius-round: 999px;
+  --gutter: clamp(1rem, 3vw, 2rem);
+}
+
+p, li, dd { text-wrap: pretty; }
+
+:where(a, button, summary):focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.radar-page {
+  background: var(--color-sky);
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  min-height: 100vh;
+  padding: var(--gutter);
+}
+
+.radar-titre {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+}
+
+.radar-carte {
+  background: var(--color-sky-mid);
+  border-radius: var(--radius-card);
+  padding: 1.5rem;
+}
+
+.radar-note {
+  background: var(--color-sand);
+  border-radius: var(--radius-round);
+  padding: 0.75rem 0.25rem;
+  text-align: center;
+  font-size: clamp(0.625rem, 2.8vw, 0.75rem);
+  overflow-wrap: break-word;
+}
+
+.radar-note b {
+  display: block;
+  font: 800 1.75rem/1 var(--font-display);
+}
+
+.radar-note-baisse {
+  background: var(--color-alert);
+  color: var(--color-on-alert);
+}
+
+/* Pastille pleine : le magenta seul sur le fond de carte n'atteint pas 4,5:1. */
+.radar-baisse {
+  display: inline-block;
+  background: var(--color-alert);
+  color: var(--color-on-alert);
+  border-radius: var(--radius-round);
+  padding: 0.25rem 0.75rem;
+  font-weight: 600;
+}
+
+.radar-bouton {
+  display: inline-block;
+  background: var(--color-alert);
+  color: var(--color-on-alert);
+  border-radius: var(--radius-round);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+}
