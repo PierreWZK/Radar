@@ -1,150 +1,353 @@
+@php
+    // Jeu du jour : un défi par jour, le même pour tous, tiré de cette liste (rien en base).
+    $defis = [
+        [
+            'page' => "l'accueil d'une boulangerie", 'note' => 78, 'meilleure' => 0,
+            'options' => [['Compresser les images', 12], ['Différer le chargement des scripts', 8], ['Optimiser la mise en cache', 6]],
+            'indice' => "L'image d'accueil pèse 2,4 Mo et c'est elle qui fixe le LCP.",
+            'explication' => "L'image d'accueil est le plus gros élément de l'écran : en WebP compressé, le LCP repasse sous 2,5 s. Les scripts et le cache aident, mais moins.",
+        ],
+        [
+            'page' => 'un blog avec chat et publicités', 'note' => 64, 'meilleure' => 1,
+            'options' => [['Compresser les images', 5], ['Différer les scripts tiers', 14], ['Précharger la police', 3]],
+            'indice' => 'Cinq scripts tiers bloquent le rendu au chargement.',
+            'explication' => "Le chat et les publicités occupent le fil principal. Chargés avec defer ou au premier clic, ils laissent la page s'afficher avant eux.",
+        ],
+        [
+            'page' => 'une boutique en ligne', 'note' => 71, 'meilleure' => 2,
+            'options' => [['Minifier le CSS', 3], ["Changer d'hébergeur", 4], ['Réserver la place des images', 9]],
+            'indice' => 'Le CLS vaut 0,32 : les vignettes poussent le texte en arrivant.',
+            'explication' => 'Des attributs width et height, ou un aspect-ratio, réservent la place avant le chargement : le CLS repasse sous 0,1.',
+        ],
+        [
+            'page' => 'un site vitrine sous WordPress', 'note' => 58, 'meilleure' => 0,
+            'options' => [['Activer un cache de pages', 15], ['Passer les images en lazy-loading', 6], ['Supprimer une police', 4]],
+            'indice' => 'Le serveur met 1,8 s à envoyer le premier octet.',
+            'explication' => 'Chaque visite reconstruit la page en PHP. Un cache de pages sert une version prête : la réponse tombe sous 200 ms.',
+        ],
+        [
+            'page' => 'une application de réservation', 'note' => 69, 'meilleure' => 1,
+            'options' => [['Ajouter un CDN', 5], ['Découper le JavaScript', 11], ['Compresser les images', 4]],
+            'indice' => 'Un seul fichier JavaScript de 900 Ko s\'exécute avant le premier clic.',
+            'explication' => "Ne charger que le code de la page affichée allège le fil principal : l'INP et le temps de blocage baissent nettement.",
+        ],
+    ];
+    $jour = intdiv(now()->startOfDay()->timestamp, 86400);
+    $defi = $defis[$jour % count($defis)];
+@endphp
 <!DOCTYPE html>
 <html lang="fr">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Radar · surveillez la note PageSpeed de vos pages</title>
-        <meta name="description" content="Radar mesure vos pages chaque jour avec PageSpeed et vous prévient dès qu'un déploiement fait chuter la note, avec des conseils pour la remonter.">
+        <title>Radar · la santé de vos sites, semaine après semaine</title>
+        <meta name="description" content="Radar mesure vos pages avec PageSpeed et vous prévient dès qu'une note baisse après un déploiement, avec des conseils concrets pour la remonter.">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=bricolage-grotesque:800|hanken-grotesk:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=bricolage-grotesque:800|hanken-grotesk:400,500,600,700|caveat:500&display=swap" rel="stylesheet" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="antialiased accueil">
-        <header class="accueil-heros">
-            <nav class="accueil-nav" aria-label="Navigation principale">
-                <a class="radar-titre text-2xl accueil-lien" href="{{ url('/') }}">Radar</a>
-                <div class="accueil-liens">
-                    <a class="accueil-lien accueil-ancre" href="#fonctionnement">Fonctionnement</a>
-                    <a class="accueil-lien accueil-ancre" href="#offres">Offres</a>
-                    <a class="accueil-lien accueil-ancre" href="#faq">FAQ</a>
+        <header class="heros">
+            <nav class="heros-nav" aria-label="Navigation principale">
+                <a class="logo" href="{{ url('/') }}">
+                    <svg class="logo-marque" viewBox="0 0 40 40" aria-hidden="true">
+                        <circle cx="20" cy="20" r="19" class="lm-fond"/>
+                        <circle cx="20" cy="20" r="12" class="lm-anneau"/>
+                        <circle cx="20" cy="20" r="6" class="lm-anneau"/>
+                        <path d="M20 20 L20 1 A19 19 0 0 1 36.5 10.5 Z" class="lm-balayage"/>
+                        <circle cx="27" cy="12" r="2.6" class="lm-echo"/>
+                    </svg>
+                    Radar
+                </a>
+                <div class="heros-ancres">
+                    <a href="#fonctionnalites">Fonctionnalités</a>
+                    <a href="#tarifs">Tarifs</a>
+                    <a href="#comment">Exemples</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+                <div class="heros-compte">
                     @auth
-                        <a class="accueil-lien" href="{{ route('dashboard') }}">Tableau de bord</a>
+                        <a class="bouton-encre" href="{{ route('dashboard') }}">Tableau de bord <span aria-hidden="true">→</span></a>
                     @else
-                        <a class="accueil-lien" href="{{ route('login') }}">Connexion</a>
-                        <a class="accueil-lien" href="{{ route('register') }}">Créer un compte</a>
+                        <a class="lien-nav" href="{{ route('login') }}">Se connecter</a>
+                        <a class="bouton-encre" href="{{ route('register') }}">Créer un compte <span aria-hidden="true">→</span></a>
                     @endauth
                 </div>
             </nav>
 
-            <div class="accueil-texte">
-                <h1 class="radar-titre accueil-h1">Votre note a baissé. Voici pourquoi.</h1>
-                <p class="accueil-chapo">Radar mesure vos pages chaque jour et vous prévient dès qu'un déploiement fait chuter la note, avec des conseils pour la&nbsp;remonter.</p>
-                <div class="accueil-actions">
-                    <a class="radar-bouton" href="{{ route('tester') }}">Tester mon site</a>
-                    <span>Gratuit, sans compte, 3 tests par jour.</span>
-                </div>
-            </div>
+            <svg class="heros-sol" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60 C 240 30, 520 70, 820 50 C 1060 34, 1260 20, 1440 30 L1440 90 L0 90 Z" class="d-dune"/></svg>
 
-            {{-- Zones = seuils Lighthouse (centre 100, anneau 90, anneau 50) ; chaque note est un écho à sa distance du centre --}}
-            <figure class="accueil-radar">
-                <svg class="radar-ecran" viewBox="0 0 720 720" role="img" aria-label="Exemple de radar : performance 94 en baisse de 3, accessibilité 100, bonnes pratiques 96, SEO 92">
-                    <circle cx="360" cy="360" r="360" class="r-loin"/>
-                    <circle cx="360" cy="360" r="300" class="r-milieu"/>
-                    <circle cx="360" cy="360" r="200" class="r-pres"/>
-                    <circle cx="360" cy="360" r="350" class="r-graduation" stroke-width="12" stroke-dasharray="2 28.54"/>
-                    <text x="368" y="156" class="zone">90</text>
-                    <text x="368" y="56" class="zone">50</text>
-                    <g class="balayage">
-                        <path d="M360 360 L540 48.2 A360 360 0 0 1 614.6 105.4 Z" class="r-encre" opacity=".03"/>
-                        <path d="M360 360 L614.6 105.4 A360 360 0 0 1 671.8 180 Z" class="r-encre" opacity=".06"/>
-                        <path d="M360 360 L671.8 180 A360 360 0 0 1 707.7 266.8 Z" class="r-encre" opacity=".1"/>
-                        <path d="M360 360 L707.7 266.8 A360 360 0 0 1 720 360 Z" class="r-encre" opacity=".16"/>
-                    </g>
-                    <line x1="390" y1="308" x2="420" y2="256" class="r-trace" stroke-width="3" stroke-dasharray="4 5"/>
-                    <circle cx="390" cy="308" r="7" class="r-trace" fill="none" stroke-width="3"/>
-                    <circle class="ping r-alerte" style="animation-delay:5s" cx="420" cy="256" r="12"/>
-                    <circle cx="420" cy="256" r="12" class="r-alerte"/>
-                    <text x="440" y="250" class="echo baisse">Perf 94 −3</text>
-                    <circle class="ping r-encre" style="animation-delay:.33s" cx="398" cy="374" r="8"/>
-                    <circle cx="398" cy="374" r="8" class="r-encre"/>
-                    <text x="414" y="398" class="echo">Access. 100</text>
-                    <circle class="ping r-encre" style="animation-delay:2s" cx="320" cy="429" r="8"/>
-                    <circle cx="320" cy="429" r="8" class="r-encre"/>
-                    <text x="250" y="462" class="echo">Pratiques 96</text>
-                    <circle class="ping r-encre" style="animation-delay:3.33s" cx="210" cy="305" r="8"/>
-                    <circle cx="210" cy="305" r="8" class="r-encre"/>
-                    <text x="150" y="285" class="echo">SEO 92</text>
-                    <circle cx="360" cy="360" r="5" class="r-encre"/>
-                </svg>
-                <figcaption class="accueil-legende">Exemple : une page mobile, le lendemain d'un déploiement.</figcaption>
-            </figure>
+            <div class="heros-grille">
+                <div class="heros-texte">
+                    <h1 class="heros-titre">
+                        La santé de vos sites,
+                        <span class="heros-titre-accent">semaine après semaine.
+                            <svg class="soulignement" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 18 C 90 6, 200 4, 396 10 M30 22 C 120 14, 220 12, 300 14"/></svg>
+                        </span>
+                    </h1>
+                    <p class="heros-chapo">Radar surveille vos sites et vous alerte dès qu'une note baisse. Performance, accessibilité, bonnes pratiques et SEO : tout est mesuré et expliqué, sans&nbsp;jargon.</p>
+                    <ul class="heros-atouts">
+                        <li>Mesures quotidiennes</li>
+                        <li>Alertes après un déploiement</li>
+                        <li>Conseils concrets</li>
+                    </ul>
+                    <div class="heros-actions">
+                        <a class="bouton-encre bouton-grand" href="{{ route('tester') }}">Tester gratuitement <span aria-hidden="true">→</span></a>
+                        <a class="lien-lecture" href="#comment">Voir un exemple
+                            <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8"/><path d="M6.5 5 L11 8 L6.5 11 Z" fill="#fff"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <figure class="scene" id="scene" role="img" aria-label="Exemple de tableau de bord Radar : la note Performance passe de 92 à 84 après un déploiement, une alerte apparaît avec deux conseils.">
+                    {{-- Décor dessiné : soleil, orbite du radar, dunes, montagnes, phare --}}
+                    <svg class="scene-decor" viewBox="0 0 760 540" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+                        <circle cx="420" cy="230" r="160" class="d-soleil"/>
+                        <path d="M30 250 C 110 40, 520 -30, 720 130" class="d-orbite"/>
+                        <circle cx="250" cy="74" r="13" class="d-alerte"/>
+                        <path d="M395 92 l10 -14 M410 96 l14 -10" class="d-traits"/>
+                        <path d="M0 540 C 120 520, 260 456, 430 440 C 560 428, 660 396, 760 372 L760 540 Z" class="d-dune"/>
+                        <path d="M120 540 C 260 500, 400 498, 560 482 C 650 474, 710 462, 760 452 L760 540 Z" class="d-dune-claire"/>
+                        <path d="M30 540 L70 440 L92 460 L140 352 L230 520 Z" class="d-encre"/>
+                        <path d="M140 352 L160 528 L230 520 Z" class="d-encre-face"/>
+                        <path d="M560 470 L652 318 L690 368 L760 270 L760 470 Z" class="d-encre"/>
+                        <path d="M652 318 L640 470 L560 470 Z" class="d-encre-face"/>
+                        <path d="M600 448 L760 384 L760 402 L622 456 Z" class="d-alerte"/>
+                        <g class="d-phare">
+                            <path d="M702 300 L709 138 L729 138 L736 300 Z" class="d-blanc"/>
+                            <path d="M706 210 L733 210 L734 236 L705 236 Z M708 160 L730 160 L731 184 L707 184 Z M704 262 L735 262 L736 288 L703 288 Z" class="d-alerte"/>
+                            <rect x="702" y="128" width="34" height="10" rx="2" class="d-encre"/>
+                            <rect x="709" y="106" width="20" height="22" class="d-encre"/>
+                            <rect x="713" y="110" width="12" height="14" class="d-vitre"/>
+                            <path d="M705 106 L719 90 L733 106 Z" class="d-encre"/>
+                            <path d="M688 92 l-12 -8 M690 112 l-16 0 M748 92 l12 -8 M748 112 l16 0" class="d-rayons"/>
+                        </g>
+                    </svg>
+
+                    <div class="tdb" aria-hidden="true">
+                        <div class="tdb-barre">
+                            <svg class="tdb-logo" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" class="lm-fond-clair"/><path d="M20 20 L20 1 A19 19 0 0 1 36.5 10.5 Z" class="lm-balayage"/><circle cx="27" cy="12" r="2.6" class="lm-echo"/></svg>
+                            <span class="tdb-menu actif">Tableau de bord</span>
+                            <span class="tdb-menu">Mes sites</span>
+                            <span class="tdb-menu">Alertes</span>
+                            <span class="tdb-menu">Paramètres</span>
+                        </div>
+                        <div class="tdb-panneau">
+                            <div class="tdb-haut">
+                                <span class="tdb-champ">votresite.fr</span>
+                                <span class="tdb-champ tdb-date">Aujourd'hui</span>
+                            </div>
+                            <div class="tdb-carte tdb-notes">
+                                <div class="anneau" data-note="84">
+                                    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" class="anneau-piste"/><circle cx="50" cy="50" r="40" class="anneau-arc" pathLength="100" style="--note: 84"/></svg>
+                                    <span class="anneau-chiffre">84</span>
+                                    <span class="anneau-balayage"></span>
+                                </div>
+                                <ul class="tdb-lignes">
+                                    <li class="tdb-ligne ligne-perf"><i class="pastille p-alerte">P</i>Performance<b class="valeur-perf">84</b><em class="ecart-perf baisse">−8</em></li>
+                                    <li class="tdb-ligne"><i class="pastille p-bon">A</i>Accessibilité<b>96</b><em>+1</em></li>
+                                    <li class="tdb-ligne"><i class="pastille p-moyen">B</i>Bonnes pratiques<b>94</b><em>+3</em></li>
+                                    <li class="tdb-ligne"><i class="pastille p-calme">S</i>SEO<b>90</b><em>+1</em></li>
+                                </ul>
+                            </div>
+                            <div class="tdb-bas">
+                                <div class="tdb-carte tdb-courbes">
+                                    <p class="tdb-titre">Évolution des notes <span>(90 jours)</span></p>
+                                    <svg viewBox="0 0 200 70" preserveAspectRatio="none">
+                                        <path d="M0 18 H200 M0 38 H200 M0 58 H200" class="courbe-grille"/>
+                                        <polyline class="courbe c-bon" pathLength="1" points="0,22 20,20 40,23 60,19 80,21 100,18 120,20 140,17 160,19 180,18 200,17"/>
+                                        <polyline class="courbe c-moyen" pathLength="1" points="0,28 20,30 40,27 60,29 80,26 100,28 120,25 140,27 160,26 180,24 200,25"/>
+                                        <polyline class="courbe c-calme" pathLength="1" points="0,34 20,33 40,35 60,32 80,34 100,31 120,33 140,32 160,30 180,31 200,30"/>
+                                        <polyline class="courbe c-alerte" pathLength="1" points="0,26 20,24 40,27 60,23 80,25 100,22 120,24 140,21 160,23 180,22 200,40"/>
+                                    </svg>
+                                </div>
+                                <div class="tdb-carte tdb-vitaux">
+                                    <p class="tdb-titre">Core Web Vitals</p>
+                                    <p class="vital vital-lcp"><i class="point p-moyen"></i>LCP<b class="valeur-lcp">2,9 s</b></p>
+                                    <p class="vital"><i class="point p-bon"></i>CLS<b>0,05</b></p>
+                                    <p class="vital"><i class="point p-bon"></i>INP<b>120 ms</b></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alerte-carte" aria-hidden="true">
+                        <p class="alerte-titre"><svg viewBox="0 0 20 20"><path d="M10 2 L19 18 H1 Z"/><path d="M10 8 V12 M10 14.5 V15" class="alerte-signe"/></svg>Alerte détectée !</p>
+                        <p>La note Performance a baissé de 8 points après votre déploiement.</p>
+                        <ol class="alerte-conseils">
+                            <li>Compresser l'image d'accueil <b>−1,2 s</b></li>
+                            <li>Différer le script de chat <b>−0,4 s</b></li>
+                        </ol>
+                    </div>
+
+                    <div class="mini-carte" aria-hidden="true">
+                        <p>Performance hier</p>
+                        <div class="anneau anneau-petit">
+                            <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" class="anneau-piste"/><circle cx="50" cy="50" r="40" class="anneau-arc arc-bon" pathLength="100" style="--note: 92"/></svg>
+                            <span class="anneau-chiffre">92</span>
+                        </div>
+                    </div>
+                </figure>
+            </div>
         </header>
 
         <main>
-            <section id="fonctionnement" class="accueil-bande accueil-sable accueil-duo">
+            <section id="fonctionnalites" class="bande bande-papier">
+                <h2 class="sr-only">Fonctionnalités</h2>
+                <div class="atouts">
+                    <article class="atout">
+                        <span class="atout-icone"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 L4 14 H11 L10 22 L20 9 H13 Z" class="icone-plein"/></svg></span>
+                        <h3>Des mesures fiables</h3>
+                        <p>Données réelles de PageSpeed Insights, avec une médiane de 3 mesures pour plus de précision.</p>
+                    </article>
+                    <article class="atout">
+                        <span class="atout-icone"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20 H20 M7 16 V11 M11 16 V8 M15 16 V12 M19 16 V5" class="icone-trait"/><path d="M5 9 L10 5 L14 8 L20 3" class="icone-trait"/></svg></span>
+                        <h3>Une vue claire</h3>
+                        <p>Suivez l'évolution de vos notes et de vos Core Web Vitals sur 90&nbsp;jours.</p>
+                    </article>
+                    <article class="atout">
+                        <span class="atout-icone"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16 V11 A6 6 0 0 1 18 11 V16 L20 18 H4 Z" class="icone-plein"/><path d="M10 20 A2 2 0 0 0 14 20" class="icone-trait"/></svg></span>
+                        <h3>Des alertes utiles</h3>
+                        <p>Une baisse de note ? Vous recevez un e-mail avec les conseils les plus rentables, classés par gain de&nbsp;temps.</p>
+                    </article>
+                    <article class="atout">
+                        <span class="atout-icone"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 L20 5 V11 C20 16 16.5 20 12 22 C7.5 20 4 16 4 11 V5 Z" class="icone-plein"/></svg></span>
+                        <h3>Pour tous les projets</h3>
+                        <p>D'une seule page au site entier (jusqu'à 200 pages) : Radar suit le freelance comme la petite&nbsp;agence.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section id="defi" class="bande bande-sable-clair defi">
+                <div class="defi-texte">
+                    <p class="surtitre">Le jeu du jour</p>
+                    <h2 class="titre-section">Quelle est la meilleure amélioration ?</h2>
+                    <p>Trois optimisations possibles, un seul meilleur choix. Testez votre flair et apprenez ce qui fait vraiment monter une&nbsp;note.</p>
+                    <a class="bouton-magenta" href="#defi-question" data-jouer>Jouer maintenant <span aria-hidden="true">→</span></a>
+                </div>
+
+                <div class="defi-carte" data-defi='@json($defi)'>
+                    <div class="defi-question">
+                        <p class="pilule-magenta">Défi du jour</p>
+                        <h3 id="defi-question">Comment améliorer ce site ?</h3>
+                        <p class="defi-contexte">Vous gérez {{ $defi['page'] }}. Indice : {{ $defi['indice'] }}</p>
+                        <fieldset class="defi-options">
+                            <legend class="sr-only">Choisissez l'option qui fait le plus monter la note Performance</legend>
+                            @foreach ($defi['options'] as $i => [$libelle, $gain])
+                                <label class="defi-option">
+                                    <input type="radio" name="defi" value="{{ $i }}">
+                                    <span>{{ $libelle }}</span>
+                                    <em class="defi-gain" hidden>+{{ $gain }}</em>
+                                </label>
+                            @endforeach
+                        </fieldset>
+                        <p class="defi-resultat" aria-live="polite"></p>
+                        <details class="defi-sans-js">
+                            <summary>Voir la réponse</summary>
+                            <p>{{ $defi['options'][$defi['meilleure']][0] }} (+{{ $defi['options'][$defi['meilleure']][1] }}). {{ $defi['explication'] }}</p>
+                        </details>
+                    </div>
+                    <div class="defi-apercu" aria-hidden="true">
+                        <div class="navigateur">
+                            <span class="navigateur-points"><i></i><i></i><i></i></span>
+                            <svg viewBox="0 0 120 70" class="navigateur-image"><rect width="120" height="70" class="d-ciel"/><circle cx="88" cy="22" r="10" class="d-soleil"/><path d="M0 70 L34 30 L52 48 L74 22 L120 70 Z" class="d-encre"/><path d="M74 22 L66 70 L120 70 Z" class="d-encre-face"/></svg>
+                            <span class="navigateur-ligne"></span>
+                            <span class="navigateur-ligne courte"></span>
+                        </div>
+                        <div class="defi-note">
+                            <p>Performance</p>
+                            <div class="anneau anneau-petit">
+                                <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" class="anneau-piste"/><circle cx="50" cy="50" r="40" class="anneau-arc arc-moyen" pathLength="100" style="--note: {{ $defi['note'] }}"/></svg>
+                                <span class="anneau-chiffre">{{ $defi['note'] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="defi-illustration" aria-hidden="true">
+                    <p class="manuscrit">Un petit effort aujourd'hui, de meilleures notes demain&nbsp;!</p>
+                    <svg viewBox="0 0 320 260">
+                        <path d="M70 70 C 40 90, 30 120, 60 140" class="d-pointille"/>
+                        <circle cx="210" cy="150" r="70" class="d-soleil"/>
+                        <path d="M60 260 L150 150 L180 180 L230 110 L320 230 L320 260 Z" class="d-encre"/>
+                        <path d="M230 110 L214 260 L320 260 L320 230 Z" class="d-encre-face"/>
+                        <path d="M120 260 L320 200 L320 214 L140 260 Z" class="d-alerte"/>
+                        <path d="M231 110 V76" class="d-mat"/>
+                        <path d="M232 77 L258 85 L232 93 Z" class="d-alerte"/>
+                        <circle cx="216" cy="98" r="5" class="d-encre"/>
+                        <path d="M216 104 L218 120 M218 120 L210 132 M218 120 L226 130 M217 110 L229 104 M217 110 L206 114" class="d-silhouette"/>
+                    </svg>
+                </div>
+            </section>
+
+            <section id="comment" class="bande bande-ciel duo">
                 <div>
-                    <h2 class="radar-titre accueil-h2">Trois étapes, aucune configuration.</h2>
-                    <ol class="accueil-etapes">
+                    <h2 class="titre-section">Trois étapes, aucune configuration.</h2>
+                    <ol class="etapes">
                         <li><span><b>Ajoutez vos pages.</b> Collez une adresse, ou importez le sitemap de votre site.</span></li>
                         <li><span><b>Radar les mesure.</b> PageSpeed, trois passages dont on garde la médiane, sur mobile et sur&nbsp;ordinateur.</span></li>
                         <li><span><b>Vous êtes prévenu.</b> Un e-mail dès que la note baisse, avec ce qu'il faut corriger en&nbsp;premier.</span></li>
                     </ol>
                 </div>
-                <article class="radar-carte accueil-alerte">
-                    <p class="text-sm">Exemple d'alerte</p>
-                    <p class="font-semibold">monsite.fr · mobile</p>
+                <article class="carte-blanche">
+                    <p class="carte-surtitre">Exemple d'alerte · monsite.fr · mobile</p>
                     <div class="grid grid-cols-4 gap-2 my-5">
-                        <div class="radar-note radar-note-baisse"><b>94</b>Perf −3</div>
-                        <div class="radar-note"><b>100</b>Access.</div>
-                        <div class="radar-note"><b>96</b>Pratiques</div>
-                        <div class="radar-note"><b>92</b>SEO</div>
+                        <div class="radar-note radar-note-baisse"><b>84</b>Perf −8</div>
+                        <div class="radar-note"><b>96</b>Access.</div>
+                        <div class="radar-note"><b>94</b>Pratiques</div>
+                        <div class="radar-note"><b>90</b>SEO</div>
                     </div>
-                    <p><b>LCP 2,9&nbsp;s</b> (était 2,1&nbsp;s) depuis hier. Conseil : compresser les images de l'accueil, gain estimé 1,2&nbsp;s.</p>
+                    <p><b>LCP 2,9&nbsp;s</b> (était 2,1&nbsp;s) depuis hier. Conseil : compresser l'image d'accueil, gain estimé 1,2&nbsp;s.</p>
                 </article>
             </section>
 
-            <section id="mesures" class="accueil-bande">
-                <h2 class="radar-titre accueil-h2">Ce que Radar surveille.</h2>
-                <p class="accueil-intro">Les quatre notes de Lighthouse, de 0 à 100, et les trois signaux que Google utilise pour juger l'expérience d'une&nbsp;page.</p>
-                <div class="accueil-grille">
-                    <article class="radar-carte"><h3 class="accueil-h3">Performance</h3><p>La vitesse d'affichage. C'est elle qui chute après un déploiement : une image trop lourde, un script de&nbsp;plus.</p></article>
-                    <article class="radar-carte"><h3 class="accueil-h3">Accessibilité</h3><p>Contrastes, textes alternatifs, titres : ce qui rend la page utilisable par&nbsp;tous.</p></article>
-                    <article class="radar-carte"><h3 class="accueil-h3">Bonnes pratiques</h3><p>HTTPS, erreurs dans la console, bibliothèques obsolètes.</p></article>
-                    <article class="radar-carte"><h3 class="accueil-h3">SEO</h3><p>Ce que les moteurs de recherche lisent : titre, description, liens explorables.</p></article>
-                </div>
-
-                <table class="accueil-seuils">
-                    <caption>Seuils des Core Web Vitals selon Google</caption>
-                    <thead>
-                        <tr><th scope="col">Signal</th><th scope="col">Bon</th><th scope="col">À améliorer</th><th scope="col">Mauvais</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><th scope="row">LCP <span>affichage du plus gros élément</span></th><td>≤ 2,5&nbsp;s</td><td>≤ 4&nbsp;s</td><td>&gt; 4&nbsp;s</td></tr>
-                        <tr><th scope="row">CLS <span>stabilité de la mise en page</span></th><td>≤ 0,1</td><td>≤ 0,25</td><td>&gt; 0,25</td></tr>
-                        <tr><th scope="row">INP <span>réaction au clic</span></th><td>≤ 200&nbsp;ms</td><td>≤ 500&nbsp;ms</td><td>&gt; 500&nbsp;ms</td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section class="accueil-bande accueil-encre">
-                <h2 class="radar-titre accueil-h2">Une alerte quand ça compte, pas à chaque variation.</h2>
-                <div class="accueil-grille accueil-grille-3">
-                    <div><p class="accueil-chiffre">−5</p><p>points de performance sous la médiane des 7 derniers jours : Radar vous écrit.</p></div>
-                    <div><p class="accueil-chiffre">3</p><p>mesures à chaque passage. On garde la médiane, pour ne pas crier au loup sur un réseau&nbsp;lent.</p></div>
-                    <div><p class="accueil-chiffre">1</p><p>e-mail par page et par jour au maximum. Un LCP, CLS ou INP qui change de catégorie déclenche aussi&nbsp;l'alerte.</p></div>
+            <section class="bande bande-papier">
+                <h2 class="titre-section">Les signaux que Google regarde.</h2>
+                <p class="intro">Les quatre notes de Lighthouse, de 0 à 100, et les trois Core Web Vitals, avec les seuils officiels.</p>
+                <div class="tableau-defile">
+                    <table class="seuils">
+                        <caption class="sr-only">Seuils des Core Web Vitals selon Google</caption>
+                        <thead>
+                            <tr><th scope="col">Signal</th><th scope="col">Bon</th><th scope="col">À améliorer</th><th scope="col">Mauvais</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><th scope="row">LCP <span>affichage du plus gros élément</span></th><td>≤ 2,5&nbsp;s</td><td>≤ 4&nbsp;s</td><td>&gt; 4&nbsp;s</td></tr>
+                            <tr><th scope="row">CLS <span>stabilité de la mise en page</span></th><td>≤ 0,1</td><td>≤ 0,25</td><td>&gt; 0,25</td></tr>
+                            <tr><th scope="row">INP <span>réaction au clic</span></th><td>≤ 200&nbsp;ms</td><td>≤ 500&nbsp;ms</td><td>&gt; 500&nbsp;ms</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </section>
 
-            <section class="accueil-bande accueil-sable accueil-duo">
+            <section class="bande bande-encre">
+                <h2 class="titre-section">Une alerte quand ça compte, pas à chaque variation.</h2>
+                <div class="chiffres">
+                    <div><p class="chiffre">−5</p><p>points de performance sous la médiane des 7 derniers jours : Radar vous écrit.</p></div>
+                    <div><p class="chiffre">3</p><p>mesures à chaque passage. On garde la médiane, pour ne pas crier au loup sur un réseau&nbsp;lent.</p></div>
+                    <div><p class="chiffre">1</p><p>e-mail par page et par jour au maximum. Un LCP, CLS ou INP qui change de catégorie déclenche aussi&nbsp;l'alerte.</p></div>
+                </div>
+            </section>
+
+            <section class="bande bande-sable-clair duo">
                 <div>
-                    <h2 class="radar-titre accueil-h2">Affichez votre note.</h2>
-                    <p class="accueil-intro">Chaque page suivie a son badge, mis à jour après chaque mesure. Collez-le dans un README ou au pied de votre&nbsp;site.</p>
+                    <h2 class="titre-section">Affichez votre note.</h2>
+                    <p class="intro">Chaque page suivie a son badge, mis à jour après chaque mesure. Collez-le dans un README ou au pied de votre&nbsp;site.</p>
                 </div>
-                <div class="radar-carte accueil-alerte">
+                <div class="carte-blanche">
                     @include('badges.performance', ['texte' => '94', 'couleur' => \App\Services\Badge::VERT])
-                    <pre class="accueil-code"><code>&lt;img src="https://radar.projectp.fr/badge/42.svg" alt="Note de performance"&gt;</code></pre>
+                    <pre class="code"><code>&lt;img src="https://radar.projectp.fr/badge/42.svg" alt="Note de performance"&gt;</code></pre>
                 </div>
             </section>
 
-            <section id="offres" class="accueil-bande">
-                <h2 class="radar-titre accueil-h2">Offres.</h2>
-                <p class="accueil-intro">Commencez gratuitement. Le paiement en ligne des offres Solo et Agence arrive&nbsp;bientôt.</p>
-                <div class="accueil-grille accueil-grille-3">
-                    <article class="radar-carte accueil-offre">
-                        <h3 class="accueil-h3">Gratuit</h3>
-                        <p class="accueil-prix">0 €</p>
+            <section id="tarifs" class="bande bande-ciel">
+                <h2 class="titre-section">Commencez gratuitement.</h2>
+                <p class="intro">Le paiement en ligne des offres Solo et Agence arrive&nbsp;bientôt.</p>
+                <div class="offres">
+                    <article class="offre">
+                        <h3>Gratuit</h3>
+                        <p class="prix">0 €</p>
                         <ul>
                             <li>{{ config('offres.gratuit.sites') }} site, {{ config('offres.gratuit.pages_par_site') }} page</li>
                             <li>Une mesure mobile par semaine</li>
@@ -152,14 +355,15 @@
                             <li>3 conseils si la note passe sous 50</li>
                         </ul>
                         @auth
-                            <a class="radar-bouton" href="{{ route('dashboard') }}">Mon tableau de bord</a>
+                            <a class="bouton-encre" href="{{ route('dashboard') }}">Mon tableau de bord</a>
                         @else
-                            <a class="radar-bouton" href="{{ route('register') }}">Créer un compte</a>
+                            <a class="bouton-encre" href="{{ route('register') }}">Créer un compte</a>
                         @endauth
                     </article>
-                    <article class="radar-carte accueil-offre accueil-offre-phare">
-                        <h3 class="accueil-h3">Solo</h3>
-                        <p class="accueil-prix">4 € <span>/ mois</span></p>
+                    <article class="offre offre-phare">
+                        <p class="pilule-magenta">Le plus choisi</p>
+                        <h3>Solo</h3>
+                        <p class="prix">4 € <span>/ mois</span></p>
                         <ul>
                             <li>{{ config('offres.solo.sites') }} sites, {{ config('offres.solo.pages_par_site') }} pages par site</li>
                             <li>Mesure quotidienne, mobile et ordinateur</li>
@@ -167,9 +371,9 @@
                             <li>10 conseils à chaque alerte</li>
                         </ul>
                     </article>
-                    <article class="radar-carte accueil-offre">
-                        <h3 class="accueil-h3">Agence</h3>
-                        <p class="accueil-prix">12 € <span>/ mois</span></p>
+                    <article class="offre">
+                        <h3>Agence</h3>
+                        <p class="prix">12 € <span>/ mois</span></p>
                         <ul>
                             <li>{{ config('offres.agence.sites') }} sites, {{ config('offres.agence.pages_par_site') }} pages par site</li>
                             <li>Tout ce que contient Solo</li>
@@ -177,12 +381,12 @@
                         </ul>
                     </article>
                 </div>
-                <p class="accueil-option"><b>Option Site entier, +3 € par mois et par site :</b> Radar importe votre sitemap et suit jusqu'à 200 pages, mesurées à tour de rôle chaque&nbsp;semaine.</p>
+                <p class="option"><b>Option Site entier, +3 € par mois et par site :</b> Radar importe votre sitemap et suit jusqu'à 200 pages, mesurées à tour de rôle chaque&nbsp;semaine.</p>
             </section>
 
-            <section id="faq" class="accueil-bande accueil-sable">
-                <h2 class="radar-titre accueil-h2">Questions fréquentes</h2>
-                <div class="accueil-faq">
+            <section id="faq" class="bande bande-papier">
+                <h2 class="titre-section">Questions fréquentes</h2>
+                <div class="faq">
                     <details>
                         <summary>D'où viennent les notes ?</summary>
                         <p>De PageSpeed Insights, l'outil de Google qui fait tourner Lighthouse. Radar l'appelle depuis son serveur : vous n'avez aucune clé à créer.</p>
@@ -206,15 +410,89 @@
                 </div>
             </section>
 
-            <section class="accueil-bande accueil-final">
-                <h2 class="radar-titre accueil-h2">Quelle est la note de votre accueil ?</h2>
-                <a class="radar-bouton" href="{{ route('tester') }}">Tester mon site</a>
+            <section class="bande bande-sable final">
+                <h2 class="titre-section">Quelle est la note de votre accueil ?</h2>
+                <a class="bouton-encre bouton-grand" href="{{ route('tester') }}">Tester gratuitement <span aria-hidden="true">→</span></a>
             </section>
         </main>
 
-        <footer class="accueil-pied">
+        <footer class="pied">
             <span>Radar · Jour 13 du défi <a href="https://projectp.fr/">30 jours, 30 projets</a></span>
             <span>Fait avec Laravel · <a href="https://github.com/PierreWZK/Radar" target="_blank" rel="noopener">Code sur GitHub ↗</a></span>
         </footer>
+
+        <script>
+            (() => {
+                const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                // Héros : sans JavaScript ou en mouvement réduit, l'état final (note 84, alerte ouverte) reste affiché.
+                const scene = document.getElementById('scene');
+                if (scene && !calme) {
+                    const etape = (classe, delai) => setTimeout(() => scene.classList.add(classe), delai);
+                    const lcp = scene.querySelector('.valeur-lcp');
+                    lcp.textContent = '2,1 s';
+                    setTimeout(() => { lcp.textContent = '2,9 s'; }, 2600);
+                    scene.classList.add('rejoue');
+                    requestAnimationFrame(() => requestAnimationFrame(() => scene.classList.add('e1')));
+                    etape('e2', 2600);
+                    etape('e3', 3200);
+                    etape('e4', 4000);
+                    // La note descend de 92 à 84 en même temps que l'anneau.
+                    setTimeout(() => {
+                        const chiffre = scene.querySelector('.tdb .anneau-chiffre');
+                        const valeur = scene.querySelector('.valeur-perf');
+                        let note = 92;
+                        const pas = setInterval(() => {
+                            note -= 1;
+                            chiffre.textContent = valeur.textContent = note;
+                            if (note <= 84) clearInterval(pas);
+                        }, 70);
+                    }, 2600);
+                }
+
+                // Jeu du jour
+                const carte = document.querySelector('.defi-carte');
+                if (!carte) return;
+                const defi = JSON.parse(carte.dataset.defi);
+                const resultat = carte.querySelector('.defi-resultat');
+                const anneau = carte.querySelector('.defi-note .anneau-arc');
+                const chiffre = carte.querySelector('.defi-note .anneau-chiffre');
+                const cle = 'radar-defi-' + new Date().toISOString().slice(0, 10);
+                carte.querySelector('.defi-sans-js').hidden = true;
+
+                document.querySelector('[data-jouer]').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    carte.scrollIntoView({ behavior: calme ? 'auto' : 'smooth', block: 'center' });
+                    carte.querySelector('input').focus({ preventScroll: true });
+                });
+
+                function repondre(choix) {
+                    const [libelle, gain] = defi.options[defi.meilleure];
+                    carte.querySelectorAll('.defi-option').forEach((option, i) => {
+                        option.querySelector('input').disabled = true;
+                        option.querySelector('.defi-gain').hidden = false;
+                        option.classList.toggle('juste', i === defi.meilleure);
+                        option.classList.toggle('faux', i === choix && i !== defi.meilleure);
+                    });
+                    carte.querySelectorAll('input')[choix].checked = true;
+                    const note = defi.note + defi.options[choix][1];
+                    anneau.style.setProperty('--note', note);
+                    anneau.classList.toggle('arc-bon', note >= 90);
+                    chiffre.textContent = note;
+                    resultat.textContent = (choix === defi.meilleure ? 'Bien vu ! ' : `Pas tout à fait : la meilleure option était « ${libelle} » (+${gain}). `) + defi.explication;
+                }
+
+                carte.querySelector('.defi-options').addEventListener('change', (e) => {
+                    const choix = Number(e.target.value);
+                    repondre(choix);
+                    try { localStorage.setItem(cle, choix); } catch {}
+                });
+
+                try {
+                    const deja = localStorage.getItem(cle);
+                    if (deja !== null) repondre(Number(deja));
+                } catch {}
+            })();
+        </script>
     </body>
 </html>

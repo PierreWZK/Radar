@@ -49,6 +49,23 @@ Tests : `php artisan test` (PHPUnit). Chaque étape : tests d'abord, puis code, 
 
 **Terminé** : tests du badge (couleurs aux seuils 90 et 50) ; capture mobile et ordinateur vérifiée à la main, sans débordement horizontal.
 
+## Étape 6b · Refonte de l'accueil (maquette du 25/10)
+
+- Héros : titre « La santé de vos sites, semaine après semaine. », tableau de bord en perspective, alerte magenta, décor dessiné en SVG (soleil, orbite, dunes, montagnes, phare).
+- Animations : balayage qui révèle les quatre notes, note Performance qui baisse puis alerte et conseils, courbes qui se dessinent. État final affiché sans JavaScript ou avec `prefers-reduced-motion`.
+- Bande de quatre fonctionnalités ; jeu du jour en démo (un défi par jour tiré d'une liste, rien en base) ; offres, FAQ et footer gardés.
+
+**Terminé** : tests de l'accueil passent ; captures mobile et ordinateur sans débordement ; détecteur impeccable sans alerte.
+
+## Étape 6c · Refonte du tableau de bord, page Alertes et exemple public
+
+- Layout connecté : barre latérale noire (Tableau de bord, Mes sites, Alertes, Paramètres = profil).
+- Tableau de bord et fiche de page au visuel de la maquette (anneaux de score, courbe 90 jours, Core Web Vitals).
+- Page Alertes : historique des alertes du compte, la plus récente en premier.
+- Page `/exemple` publique : tableau de bord en lecture seule avec des données d'exemple signalées.
+
+**Terminé** : tests de la page Alertes (seulement les alertes du compte) et de `/exemple` passent ; captures mobile et ordinateur vérifiées.
+
 ## Étape 7 · Planification et finitions
 
 - Mesures quotidiennes et hebdomadaires lancées par le planificateur Laravel.
