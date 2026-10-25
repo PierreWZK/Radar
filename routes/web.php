@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/sites/{site}', [SiteController::class, 'destroy'])->name('sites.destroy');
     Route::post('/sites/{site}/sitemap', [SiteController::class, 'importerSitemap'])->name('sites.sitemap');
     Route::post('/sites/{site}/pages', [PageController::class, 'store'])->name('sites.pages.store');
+    Route::patch('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
     Route::delete('/pages/{page}', [PageController::class, 'destroy'])->name('pages.destroy');
 });
 

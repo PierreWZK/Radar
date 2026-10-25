@@ -19,6 +19,18 @@
             @foreach ($site->pages as $page)
                 <li>
                     <span class="carte-url">{{ $page->url }}</span>
+                    @if ($site->site_entier)
+                        <form method="POST" action="{{ route('pages.update', $page) }}">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="quotidienne" value="0">
+                            <label class="case">
+                                <input type="checkbox" name="quotidienne" value="1" @checked($page->quotidienne)>
+                                Mesure chaque jour
+                            </label>
+                            <button type="submit" class="lien-compte">Enregistrer</button>
+                        </form>
+                    @endif
                     <form method="POST" action="{{ route('pages.destroy', $page) }}">
                         @csrf
                         @method('DELETE')

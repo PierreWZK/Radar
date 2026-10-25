@@ -56,6 +56,17 @@ class PageController extends Controller
         return redirect()->route('sites.show', $site);
     }
 
+    public function update(Request $request, int $page)
+    {
+        $page = Page::with('site')->findOrFail($page);
+
+        abort_unless($page->site->user_id === $request->user()->id, 404);
+
+        $page->update(['quotidienne' => $request->boolean('quotidienne')]);
+
+        return redirect()->route('sites.show', $page->site);
+    }
+
     public function destroy(Request $request, int $page)
     {
         $page = Page::with('site')->findOrFail($page);

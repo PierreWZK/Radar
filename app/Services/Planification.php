@@ -13,7 +13,7 @@ class Planification
      * Pages à mesurer ce jour-là, avec les appareils à mesurer.
      *
      * Gratuit : lundi, mobile seulement. Solo et Agence : chaque jour, mobile et ordinateur.
-     * Pages d'un « Site entier » : une fois par semaine, en roulement (une page par jour).
+     * Pages d'un « Site entier » : une fois par semaine, en roulement (une page par jour), sauf les pages marquées quotidiennes.
      *
      * @return Collection<int, array{page: Page, strategies: array<int, string>}>
      */
@@ -34,7 +34,7 @@ class Planification
             return $jour->isMonday() ? ['mobile'] : [];
         }
 
-        if ($page->site->site_entier) {
+        if ($page->site->site_entier && ! $page->quotidienne) {
             return $page->id % 7 === $jour->dayOfWeekIso - 1 ? ['mobile', 'desktop'] : [];
         }
 

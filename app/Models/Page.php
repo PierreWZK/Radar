@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Page extends Model
 {
-    protected $fillable = ['user_id', 'site_id', 'url'];
+    protected $fillable = ['user_id', 'site_id', 'url', 'quotidienne'];
+
+    protected function casts(): array
+    {
+        return ['quotidienne' => 'boolean'];
+    }
 
     public function user(): BelongsTo
     {
