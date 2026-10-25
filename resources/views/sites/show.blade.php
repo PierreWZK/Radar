@@ -11,6 +11,10 @@
     <section class="carte-page">
         <h2 class="carte-libelle">Pages suivies ({{ $site->pages->count() }})</h2>
 
+        @if ($site->pages->isEmpty())
+            <p class="tdb2-discret">Aucune page pour l'instant. Ajoutez l'adresse d'une page : Radar la mesure dès la prochaine tournée.</p>
+        @endif
+
         <ul class="pages-liste">
             @foreach ($site->pages as $page)
                 <li>

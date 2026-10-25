@@ -53,8 +53,17 @@ php artisan migrate
 php artisan serve            # http://localhost:8000
 php artisan queue:work       # dans un second terminal
 php artisan schedule:work    # dans un troisième, pour les mesures planifiées
+php artisan radar:mesurer    # lance tout de suite les mesures du jour (sans attendre 3 h)
 php artisan test             # les tests
 ```
+
+## Planification des mesures
+
+- `radar:mesurer` tourne chaque nuit à 3 h (`routes/console.php`) et met une mesure par page dans la file.
+- **Gratuit** : une mesure mobile le lundi.
+- **Solo et Agence** : chaque jour, mobile et ordinateur.
+- **Site entier** : chaque page du site n'est mesurée qu'une fois par semaine, en roulement (une page par jour, mobile et ordinateur), pour ne pas dépasser le quota PageSpeed.
+- Une page qui échoue après 3 tentatives est écrite dans `storage/logs/laravel.log` ; les autres pages ne sont pas touchées.
 
 ## Mise en ligne
 

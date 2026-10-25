@@ -10,6 +10,8 @@ use App\Services\PageSpeedClient;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class MesurerPage implements ShouldQueue
 {
@@ -22,11 +24,12 @@ class MesurerPage implements ShouldQueue
     /** @var array<int> */
     public array $backoff = [30, 120];
 
-    public function __construct(public Page $page) {}
+    /** @param array<int, string> $strategies */
+    public function __construct(public Page $page, public array $strategies = ['mobile', 'desktop']) {}
 
     public function handle(PageSpeedClient $client): void
     {
-        foreach (['mobile', 'desktop'] as $strategie) {
+        foreach ($this->strategies as $strategie) {
             $mesures = collect(range(1, 3))->map(fn () => $client->mesurer($this->page->url, $strategie));
 
             $mesure = Mesure::create([
@@ -45,6 +48,11 @@ class MesurerPage implements ShouldQueue
 
             DetecteurBaisse::pour($mesure);
         }
+    }
+
+    public function failed(Throwable $erreur): void
+    {
+        Log::warning('Mesure PageSpeed abandonnée', ['page' => $this->page->id, 'erreur' => $erreur->getMessage()]);
     }
 
     private function mediane(Collection $mesures, string $cle): int|float|null
