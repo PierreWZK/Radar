@@ -8,6 +8,32 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
+    public function show(Request $request, int $page)
+    {
+        $page = Page::with('site')->findOrFail($page);
+
+        abort_unless($page->site->user_id === $request->user()->id, 404);
+
+        $mesures = $page->mesures()
+            ->where('mesuree_le', '>=', now()->subDays(90))
+            ->orderBy('mesuree_le')
+            ->get()
+            ->groupBy('strategie');
+
+        $graphique = [
+            'dates' => $mesures->get('mobile', collect())->map(fn ($m) => $m->mesuree_le->format('d/m'))->values(),
+            'mobile' => $mesures->get('mobile', collect())->pluck('performance')->values(),
+            'desktop' => $mesures->get('desktop', collect())->pluck('performance')->values(),
+        ];
+
+        return view('pages.show', [
+            'page' => $page,
+            'graphique' => $graphique,
+            'derniere' => $mesures->get('mobile', collect())->last(),
+            'graphiques' => $request->user()->offre()['graphiques'],
+        ]);
+    }
+
     public function store(Request $request, int $site)
     {
         $site = $request->user()->sites()->findOrFail($site);

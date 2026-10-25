@@ -1,0 +1,65 @@
+/* Tokens de design/tokens.css, repris ici pour que Vite les construise avec l'application. */
+:root {
+  --color-sky: #cbe4f2;
+  --color-sky-deep: #b3d6ea;
+  --color-sky-mid: #bfdcee;
+  --color-sky-light: #d3e9f5;
+  --color-sand: #f1e3b5;
+  --color-ink: #0a0a0a;
+  --color-muted: #44606e;
+  --color-alert: #b0298f;
+  --color-on-alert: #ffffff;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-text: "Hanken Grotesk", system-ui, sans-serif;
+  --radius-card: 24px;
+  --radius-round: 999px;
+  --gutter: clamp(1rem, 3vw, 2rem);
+}
+
+.radar-page {
+  background: var(--color-sky);
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  min-height: 100vh;
+  padding: var(--gutter);
+}
+
+.radar-titre {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+}
+
+.radar-carte {
+  background: var(--color-sky-mid);
+  border-radius: var(--radius-card);
+  padding: 1.5rem;
+}
+
+.radar-note {
+  background: var(--color-sand);
+  border-radius: var(--radius-round);
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.radar-note b {
+  display: block;
+  font: 800 1.75rem/1 var(--font-display);
+}
+
+.radar-baisse {
+  color: var(--color-alert);
+  font-weight: 600;
+}
+
+.radar-bouton {
+  display: inline-block;
+  background: var(--color-alert);
+  color: var(--color-on-alert);
+  border-radius: var(--radius-round);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+}
