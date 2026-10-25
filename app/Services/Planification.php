@@ -27,17 +27,27 @@ class Planification
             ->values();
     }
 
+    /**
+     * Appareils mesurés selon l'offre : mobile en gratuit, mobile et ordinateur sinon.
+     *
+     * @return array<int, string>
+     */
+    public static function appareils(Page $page): array
+    {
+        return $page->site->user->offre()['site_entier'] ? ['mobile', 'desktop'] : ['mobile'];
+    }
+
     /** @return array<int, string> */
     private static function strategies(Page $page, Carbon $jour): array
     {
         if (! $page->site->user->offre()['site_entier']) {
-            return $jour->isMonday() ? ['mobile'] : [];
+            return $jour->isMonday() ? self::appareils($page) : [];
         }
 
         if ($page->site->site_entier && ! $page->quotidienne) {
-            return $page->id % 7 === $jour->dayOfWeekIso - 1 ? ['mobile', 'desktop'] : [];
+            return $page->id % 7 === $jour->dayOfWeekIso - 1 ? self::appareils($page) : [];
         }
 
-        return ['mobile', 'desktop'];
+        return self::appareils($page);
     }
 }
