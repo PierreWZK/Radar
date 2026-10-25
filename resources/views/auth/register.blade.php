@@ -1,52 +1,43 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+<x-guest-layout :titre="'Créer un compte · Radar'" :indexer="false">
+    <h1 class="radar-titre titre-page">Créer un compte</h1>
+    <p class="intro">Un e-mail de confirmation vous sera envoyé avant tout suivi de site.</p>
+
+    <form method="POST" action="{{ route('register') }}" class="formulaire">
         @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        <div class="champ-groupe">
+            <label for="name">Nom</label>
+            <input id="name" class="champ" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
+            @error('name') <p class="texte-erreur">{{ $message }}</p> @enderror
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="champ-groupe">
+            <label for="email">Adresse e-mail</label>
+            <input id="email" class="champ" type="email" name="email" value="{{ old('email') }}" required autocomplete="username">
+            @error('email') <p class="texte-erreur">{{ $message }}</p> @enderror
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="champ-groupe">
+            <label for="password">Mot de passe</label>
+            <div class="champ-mdp">
+                <input id="password" class="champ" type="password" name="password" required autocomplete="new-password">
+                <button type="button" class="voir-mdp" aria-controls="password">Afficher</button>
+            </div>
+            @error('password') <p class="texte-erreur">{{ $message }}</p> @enderror
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        <div class="champ-groupe">
+            <label for="password_confirmation">Confirmer le mot de passe</label>
+            <div class="champ-mdp">
+                <input id="password_confirmation" class="champ" type="password" name="password_confirmation" required autocomplete="new-password">
+                <button type="button" class="voir-mdp" aria-controls="password_confirmation">Afficher</button>
+            </div>
+            @error('password_confirmation') <p class="texte-erreur">{{ $message }}</p> @enderror
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
+        <div class="auth-actions">
+            <button type="submit" class="bouton-encre">Créer mon compte <span aria-hidden="true">→</span></button>
+            <a class="lien-texte" href="{{ route('login') }}">J'ai déjà un compte</a>
         </div>
     </form>
 </x-guest-layout>

@@ -1,30 +1,39 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="fr">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <x-seo :titre="$attributes->get('titre', 'Radar')" :description="$attributes->get('description', 'Radar mesure vos pages avec PageSpeed et vous alerte dès qu’une note baisse.')" :chemin="$attributes->get('chemin', '/')" :indexer="$attributes->get('indexer', true)" />
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=bricolage-grotesque:800|hanken-grotesk:400,500,600,700&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+    <body class="espace-corps">
+        <div class="auth">
+            <a class="espace-logo auth-logo" href="{{ url('/') }}">
+                <x-marque />
+            </a>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <main class="auth-carte">
                 {{ $slot }}
-            </div>
+            </main>
+
+            <p class="auth-pied">Radar · Jour 13 du défi <a href="https://projectp.fr/">30 jours, 30 projets</a></p>
         </div>
+
+        <script>
+            document.querySelectorAll('.voir-mdp').forEach((bouton) => {
+                bouton.addEventListener('click', () => {
+                    const champ = document.getElementById(bouton.getAttribute('aria-controls'));
+                    const masque = champ.type === 'password';
+                    champ.type = masque ? 'text' : 'password';
+                    bouton.textContent = masque ? 'Masquer' : 'Afficher';
+                });
+            });
+        </script>
     </body>
 </html>

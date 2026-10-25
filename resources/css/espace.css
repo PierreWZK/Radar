@@ -392,6 +392,10 @@ a.espace-lien:hover { background: #1c1c1c; }
 .champ-groupe label, .formulaire > label { font-weight: 600; }
 .champ { min-height: 44px; padding: 0.6rem 0.9rem; border: 1px solid #c9d2d8; border-radius: 12px; background: var(--color-white); font: inherit; color: var(--color-ink); }
 .champ:focus-visible { outline: 3px solid var(--color-ink); outline-offset: 2px; }
+.champ-mdp { position: relative; }
+.champ-mdp .champ { width: 100%; padding-right: 6.5rem; }
+.voir-mdp { position: absolute; top: 0; right: 0; min-width: 44px; min-height: 44px; padding: 0 0.9rem; border: 0; background: none; font: inherit; font-weight: 600; color: var(--color-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.voir-mdp:focus-visible { outline: 3px solid var(--color-ink); outline-offset: 2px; border-radius: 8px; }
 .case { display: flex; gap: 0.6rem; align-items: center; min-height: 44px; }
 .case input { width: 1.1rem; height: 1.1rem; accent-color: var(--color-alert); }
 .texte-erreur { color: var(--color-alert); font-weight: 600; font-size: 0.9rem; }
@@ -399,3 +403,21 @@ a.espace-lien:hover { background: #1c1c1c; }
 @media (prefers-reduced-motion: reduce) {
   .espace-lien, .bouton-encre { transition: none; }
 }
+
+/* Pages d'authentification */
+.auth { display: grid; justify-items: center; gap: 1.5rem; min-height: 100vh; padding: clamp(1.5rem, 5vw, 3rem) var(--gutter); }
+.auth-logo { justify-self: center; }
+.auth-carte { width: 100%; max-width: 440px; padding: clamp(1.5rem, 4vw, 2.25rem); background: var(--color-white); border-radius: 24px; box-shadow: 0 24px 48px -28px rgba(10, 10, 10, 0.35); }
+.auth-carte .titre-page { font-size: clamp(2rem, 6vw, 2.6rem); margin-bottom: 1rem; }
+.auth-carte .intro { color: var(--color-muted); margin-bottom: 1.25rem; }
+.auth-carte .bandeau-exemple { font-size: 0.95rem; }
+.auth-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1rem; }
+.auth-actions form { display: contents; }
+.auth-autre { margin-top: 1.5rem; color: var(--color-muted); }
+.lien-texte { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; color: var(--color-ink); background: none; border: 0; font: inherit; cursor: pointer; }
+.auth-pied { font-size: 0.875rem; color: var(--color-muted); }
+.auth-pied a { color: var(--color-ink); text-decoration: underline; }
+.auth .case { margin-top: 0.25rem; }
+.resultat-test { display: grid; gap: 1rem; margin-top: 1.5rem; max-width: 560px; }
+.resultat-test .intro { margin: 0; }
+.auth-logo { color: var(--color-ink); }

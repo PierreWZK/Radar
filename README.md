@@ -17,7 +17,7 @@ Le site est ouvert à tous, mais pensé pour les **freelances** et les **propri�
 ## Fonctionnalités
 
 1. **Alerte** (le cœur du produit) : une vraie baisse (et pas le bruit de 2 points) déclenche un e-mail avec les notes avant / après et les trois conseils les plus rentables.
-2. **Graphique** d'évolution des quatre notes et des Core Web Vitals (LCP, CLS, INP), avec les déploiements marqués.
+2. **Graphique** d'évolution des quatre notes et des Core Web Vitals (LCP, CLS, INP), sur 90 jours.
 3. Mesures automatiques via PageSpeed Insights, dans une file de tâches (médiane de 3 mesures).
 4. Test ponctuel **sans compte** : on colle une adresse, on voit ses notes.
 5. Badge de note à coller dans un README, mis à jour tout seul.
@@ -27,19 +27,15 @@ Le site est ouvert à tous, mais pensé pour les **freelances** et les **propri�
 
 | | Gratuit | Solo · 4 €/mois | Agence · 12 €/mois |
 |---|:---:|:---:|:---:|
-| Test sans compte | 3 par jour | illimité | illimité |
+| Test sans compte | 3 par jour | 3 par jour | 3 par jour |
 | Sites suivis | 1 | 3 | 15 |
 | Pages par site | 1 | 5 | 10 |
 | Fréquence | hebdo, mobile | quotidienne, mobile + ordinateur | quotidienne, mobile + ordinateur |
-| Historique | 30 jours | 1 an | 1 an |
 | Alerte de baisse | ✅ | ✅ | ✅ |
-| Astuces | les 3 prioritaires si une note < 50 | détaillées (perf, SEO, accessibilité) | détaillées |
+| Conseils | les 3 prioritaires si une note < 50 | les 10 plus rentables | les 10 plus rentables |
 | Graphiques complets + Core Web Vitals | — | ✅ | ✅ |
-| Mesure après déploiement (webhook) | — | ✅ | ✅ |
-| Rapport mensuel PDF pour les clients | — | — | ✅ |
-| Comparaison avec un concurrent | — | — | ✅ |
 
-**Option « Site entier »** (+3 €/mois par site, Solo et Agence) : toutes les pages du `sitemap.xml` (jusqu'à 200), mesurées par roulement une fois par semaine ; les pages choisies gardent leur mesure quotidienne.
+**Option « Site entier »** (+3 €/mois par site, Solo et Agence) : toutes les pages du `sitemap.xml` (jusqu'à 200), mesurées par roulement, une fois par semaine chacune.
 
 Le paiement n'est pas encore branché : les pages d'offres et de paiement existent, Stripe arrivera plus tard. En attendant, une offre s'active à la main.
 

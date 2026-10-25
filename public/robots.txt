@@ -1,2 +1,9 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /dashboard
+Disallow: /alertes
+Disallow: /sites
+Disallow: /pages/
+Disallow: /profile
+
+Sitemap: https://radar.projectp.fr/sitemap.xml

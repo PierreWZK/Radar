@@ -40,8 +40,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Radar · la santé de vos sites, semaine après semaine</title>
-        <meta name="description" content="Radar mesure vos pages avec PageSpeed et vous prévient dès qu'une note baisse après un déploiement, avec des conseils concrets pour la remonter.">
+
+        <x-seo titre="Radar · la santé de vos sites, semaine après semaine" description="Radar mesure vos pages avec PageSpeed et vous prévient dès qu'une note baisse après un déploiement, avec des conseils concrets pour la remonter." chemin="/" :jsonld="true" />
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=bricolage-grotesque:800|hanken-grotesk:400,500,600,700|caveat:500&display=swap" rel="stylesheet" />

@@ -1,25 +1,22 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
+<x-guest-layout :titre="'Mot de passe oublié · Radar'" :indexer="false">
+    <h1 class="radar-titre titre-page">Mot de passe oublié</h1>
+    <p class="intro">Indiquez votre adresse : nous vous enverrons un lien pour en choisir un nouveau.</p>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    @if (session('status'))
+        <p class="bandeau-exemple">{{ session('status') }}</p>
+    @endif
 
-    <form method="POST" action="{{ route('password.email') }}">
+    <form method="POST" action="{{ route('password.email') }}" class="formulaire">
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="champ-groupe">
+            <label for="email">Adresse e-mail</label>
+            <input id="email" class="champ" type="email" name="email" value="{{ old('email') }}" required autofocus>
+            @error('email') <p class="texte-erreur">{{ $message }}</p> @enderror
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
+        <div class="auth-actions">
+            <button type="submit" class="bouton-encre">Envoyer le lien <span aria-hidden="true">→</span></button>
         </div>
     </form>
 </x-guest-layout>

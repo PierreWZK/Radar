@@ -1,39 +1,37 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
+<x-guest-layout :titre="'Nouveau mot de passe · Radar'" :indexer="false">
+    <h1 class="radar-titre titre-page">Nouveau mot de passe</h1>
+
+    <form method="POST" action="{{ route('password.store') }}" class="formulaire">
         @csrf
 
-        <!-- Password Reset Token -->
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="champ-groupe">
+            <label for="email">Adresse e-mail</label>
+            <input id="email" class="champ" type="email" name="email" value="{{ old('email', $request->email) }}" required autofocus autocomplete="username">
+            @error('email') <p class="texte-erreur">{{ $message }}</p> @enderror
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="champ-groupe">
+            <label for="password">Nouveau mot de passe</label>
+            <div class="champ-mdp">
+                <input id="password" class="champ" type="password" name="password" required autocomplete="new-password">
+                <button type="button" class="voir-mdp" aria-controls="password">Afficher</button>
+            </div>
+            @error('password') <p class="texte-erreur">{{ $message }}</p> @enderror
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        <div class="champ-groupe">
+            <label for="password_confirmation">Confirmer le mot de passe</label>
+            <div class="champ-mdp">
+                <input id="password_confirmation" class="champ" type="password" name="password_confirmation" required autocomplete="new-password">
+                <button type="button" class="voir-mdp" aria-controls="password_confirmation">Afficher</button>
+            </div>
+            @error('password_confirmation') <p class="texte-erreur">{{ $message }}</p> @enderror
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
+        <div class="auth-actions">
+            <button type="submit" class="bouton-encre">Enregistrer le mot de passe <span aria-hidden="true">→</span></button>
         </div>
     </form>
 </x-guest-layout>
