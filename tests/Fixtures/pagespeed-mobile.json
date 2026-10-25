@@ -1,0 +1,15 @@
+{
+  "lighthouseResult": {
+    "categories": {
+      "performance": { "score": 0.94 },
+      "accessibility": { "score": 1 },
+      "best-practices": { "score": 0.96 },
+      "seo": { "score": 0.92 }
+    },
+    "audits": {
+      "largest-contentful-paint": { "numericValue": 2900 },
+      "cumulative-layout-shift": { "numericValue": 0.02 },
+      "total-blocking-time": { "numericValue": 150 }
+    }
+  }
+}
