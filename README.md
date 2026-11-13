@@ -1,6 +1,14 @@
 # Radar · La santé de votre site, semaine après semaine
 
-> Jour 13 du défi **30 jours, 30 projets** · Laravel · API PageSpeed Insights · Chart.js · ⏳ **À venir**
+🌐 **[radar.projectp.fr](https://radar.projectp.fr/)** · Jour 13 du défi **[30 jours, 30 projets](https://projectp.fr/)** · [Dépôt du défi](https://github.com/PierreWZK/30DaysProjects)
+
+Stack : Laravel, API PageSpeed Insights, Chart.js.
+
+[![Page d'accueil de Radar](docs/preview-accueil.png)](https://radar.projectp.fr/)
+
+<p align="center">
+  <img src="docs/preview-mobile.png" alt="Radar sur téléphone" width="260">
+</p>
 
 Lighthouse donne une note **à un instant donné**, puis on oublie. **Radar** suit vos sites **dans le temps** : performance, accessibilité, bonnes pratiques et SEO, mesurés chaque jour, avec un graphique d'évolution, les **Core Web Vitals** et une **alerte quand une note baisse** après un déploiement.
 
@@ -76,3 +84,14 @@ Laravel (files, tâches planifiées, notifications) · API PageSpeed Insights ·
 - **Indexation** : `robots.txt`, `sitemap.xml`, balise canonical, données structurées JSON-LD (`WebApplication` rattachée à ProjectP) et lien « 30 jours, 30 projets » vers https://projectp.fr/ dans le pied de page. Vérifier en ligne, puis me rappeler de soumettre `https://radar.projectp.fr/sitemap.xml` dans Google Search Console.
 - **Aperçu du lien** : image Open Graph stylisée 1200 × 630 aux couleurs du projet et balises `og:*` / `twitter:card`, vérifiées en ligne.
 - **Vitrine** : la mise à jour de `30days30projects` (README et `projects.js`) se fait **après ma validation**.
+
+---
+
+## Le défi 30 jours, 30 projets
+
+Un projet complet par jour pendant 30 jours, chacun en ligne sur son propre sous-domaine.
+
+- 🗂️ **Tous les projets** : [projectp.fr](https://projectp.fr/)
+- 💻 **Le dépôt du défi** : [github.com/PierreWZK/30DaysProjects](https://github.com/PierreWZK/30DaysProjects)
+- ⬅️ **Jour précédent** : [Plume, compresseur d'images](https://plume.projectp.fr/)
+- ➡️ **Jour suivant** : [Craftly, charte graphique client](https://craftly.projectp.fr/)
